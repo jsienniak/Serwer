@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<project name="testing" basedir="." default="auto-build">
+	<property name="src" value="src" />
+	
+	<!-- Sciezka do katalogu aplikacji -->
+	<property name="app_root" value="/home/mm/tomcat7/webapps/servtest" />
+	
+	<target name="auto-build" depends="create, compile">
+		<echo>--- AUTO-BUILD ---</echo>
+		<echo>Destination dir is: ${app_root}</echo>
+		
+		<copy todir="${app_root}/WEB-INF/lib">
+			<!-- Klasa servlet potrzebna jest tylko przy budowaniu -->
+			<!-- gdyz catalina ma swoja wlasna natywna -->
+			<fileset dir="lib/" excludes="servlet*.jar" />
+		</copy>
+		<copy todir="${app_root}/WEB-INF/classes">
+			<fileset dir="bin" />
+		</copy>
+		<copy file="web.xml"  tofile="${app_root}/WEB-INF/web.xml" />
+		<copy todir="${app_root}">
+			<fileset dir="web" />
+		</copy>
+	</target>
+	<target name="compile" depends="create">
+		<javac destdir="bin" excludes="*DBTest.java">
+			<src path="${src}" />
+			<classpath refid="java" />
+		</javac>
+	</target>
+
+	<target name="jar" depends="compile">
+		<jar destfile="test.jar">
+			<fileset dir="bin" />
+		</jar>
+	</target>
+
+
+	<target name="clean">
+		<delete dir="${app_root}" />
+	</target>
+	
+	<!-- Tworzy odpowiednie drzewo katalogow -->
+	<target name="create" >
+		<mkdir dir="${app_root}" />
+		<mkdir dir="${app_root}/WEB-INF/classes/lib" />
+	</target> 
+	<path id="java">
+		<fileset dir="lib">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+</project>
