@@ -1,9 +1,12 @@
 package pl.zpi.server.utils;
 
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import pl.zpi.server.db.DatabaseObj;
 
 public class XMLCravler {
 	
@@ -40,8 +43,25 @@ public class XMLCravler {
 		Document d = n.getOwnerDocument();
 		Node p = n.getParentNode();
 		p.removeChild(n);
-		Element e = d.createElement("eee");
-		p.appendChild(e);
+		try {
+			Class s = Class.forName(n.getTextContent());
+			DatabaseObj st = (DatabaseObj) s.newInstance();
+			p.appendChild(XMLToolkit.packVector(d, st.executeQuery(), "users"));
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (DOMException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (InstantiationException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IllegalAccessException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+	
 	}
 
 }

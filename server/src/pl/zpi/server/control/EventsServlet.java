@@ -23,6 +23,8 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import pl.zpi.server.control.events.AddDBUsers;
+import pl.zpi.server.control.events.ModifyDBUsers;
 import pl.zpi.server.control.events.Ping;
 import pl.zpi.server.control.events.PrintDBUsers;
 
@@ -57,8 +59,11 @@ public class EventsServlet extends HttpServlet {
 
 	@Override
 	public void init() throws ServletException {
-		EventManager.getInstance().registerEvent(new Ping());
-		EventManager.getInstance().registerEvent(new PrintDBUsers());
+		EventManager evm = EventManager.getInstance();
+		evm.registerEvent(new Ping());
+		evm.registerEvent(new PrintDBUsers());
+		evm.registerEvent(new AddDBUsers());
+		evm.registerEvent(new ModifyDBUsers());
 		try {
 			Class.forName("org.postgresql.Driver").getClass();
 		} catch (ClassNotFoundException e) {

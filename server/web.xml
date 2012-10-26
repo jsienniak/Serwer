@@ -27,12 +27,16 @@
 		<servlet-name>AppEvents</servlet-name>
 		<servlet-class>pl.zpi.server.control.EventsServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>Admin</servlet-name>
+		<servlet-class>pl.zpi.server.admin.PageServlet</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>AppEvents</servlet-name>
 		<url-pattern>/do</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-		<servlet-name>ServTest</servlet-name>
+		<servlet-name>Admin</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 
