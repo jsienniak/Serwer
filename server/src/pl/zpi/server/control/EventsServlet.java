@@ -4,6 +4,9 @@ import static pl.zpi.server.utils.XMLToolkit.createTextNode;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -25,8 +28,11 @@ import org.w3c.dom.Element;
 
 import pl.zpi.server.control.events.AddDBUsers;
 import pl.zpi.server.control.events.ModifyDBUsers;
+import pl.zpi.server.control.events.ModuleGet;
+import pl.zpi.server.control.events.ModuleSet;
 import pl.zpi.server.control.events.Ping;
 import pl.zpi.server.control.events.PrintDBUsers;
+import pl.zpi.server.control.modules.DummyModule;
 
 /**
  * Servlet ktory przyjmuje polecenia i zwraca xml
@@ -37,6 +43,7 @@ import pl.zpi.server.control.events.PrintDBUsers;
 public class EventsServlet extends HttpServlet {
 
 	private static final long serialVersionUID = -7910478707995128960L;
+	private static List<Module> modules;
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -64,6 +71,26 @@ public class EventsServlet extends HttpServlet {
 		evm.registerEvent(new PrintDBUsers());
 		evm.registerEvent(new AddDBUsers());
 		evm.registerEvent(new ModifyDBUsers());
+		// moduly
+		ModuleGet mg = new ModuleGet();
+		ModuleSet ms = new ModuleSet();
+		Module m = new DummyModule();
+		mg.put(m);
+		ms.put(m);
+		m = new DummyModule();
+		mg.put(m);
+		ms.put(m);
+		m = new DummyModule();
+		mg.put(m);
+		ms.put(m);
+		m = new DummyModule();
+		mg.put(m);
+		ms.put(m);
+		m = new DummyModule();
+		mg.put(m);
+		ms.put(m);
+		evm.registerEvent(mg);
+		evm.registerEvent(ms);
 		try {
 			Class.forName("org.postgresql.Driver").getClass();
 		} catch (ClassNotFoundException e) {
@@ -78,7 +105,7 @@ public class EventsServlet extends HttpServlet {
 		Document response = createDocument();
 		Element root = response.createElement("response");
 		response.appendChild(root);
-		PrintWriter out = resp.getWriter();
+
 		String action = req.getParameter("action");
 		if (action == null) {
 
