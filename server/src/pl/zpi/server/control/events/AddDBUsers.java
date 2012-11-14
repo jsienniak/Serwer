@@ -18,7 +18,7 @@ public class AddDBUsers extends Event {
 	//name, email, add_date, groups, last_login, active
 	@Override
 	public Node processEvent(Document doc, HttpServletRequest request) {
-		String name = request.getParameter("name");
+		String name = request.getParameter("login");
 		String email = request.getParameter("email");
 		//check attributes
 		if(name == null || email == null){
@@ -27,7 +27,7 @@ public class AddDBUsers extends Event {
 		
 		String ee = request.getParameter("");
 		DBUsers da = new DBUsers();
-		da.set("name",  name);
+		da.set("login",  name);
 		da.set("email", email);
 		da.set("active" ,"1");
 		//FIXME konwersja dat

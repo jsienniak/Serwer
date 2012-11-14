@@ -53,7 +53,10 @@ public class SQLConnectionTest {
 		Transformer transformer = null;
 		try {
 			transformer = TransformerFactory.newInstance().newTransformer();
-		} catch (TransformerConfigurationException | TransformerFactoryConfigurationError e) {
+		} catch ( TransformerFactoryConfigurationError e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TransformerConfigurationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

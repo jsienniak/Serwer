@@ -5,7 +5,7 @@ import java.util.Vector;
 
 public interface DatabaseObj {
 	
-	public abstract boolean read();
+	public abstract boolean read(); 
 
 	public abstract boolean write();
 

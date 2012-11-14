@@ -16,9 +16,9 @@ import java.sql.ResultSetMetaData;
 
 public class DBUsers implements DatabaseObj {
 	// TODO tego tu później nie będzie
-	String url = "jdbc:postgresql://localhost:5432/zpi";
-	String user = "postgres";
-	String password = "postgres";
+	String url = "jdbc:mysql://localhost:3306/zpi";
+	String user = "root";
+	String password = "a";
 	public static boolean debug = true;
 	public Map<String, String> data;
 	protected static String[] columnNames = null;
@@ -36,8 +36,8 @@ public class DBUsers implements DatabaseObj {
 	}
 
 	public DBUsers() {
-		this.primaryKey = "id_user";
-		this.tableName = "zpi_users";
+		this.primaryKey = "id_users";
+		this.tableName = "users";
 		data = new HashMap<String, String>();
 	}
 
@@ -161,14 +161,13 @@ public class DBUsers implements DatabaseObj {
 					if(debug){
 						logger.info("INSERT INTO " + tableName + " " + cols + " VALUES " + values);
 					}
-					st.executeUpdate("INSERT INTO " + tableName + " " + cols + " VALUES " + values,1);
-				
-					
+					st.executeUpdate("INSERT INTO " + tableName + " " + cols + " VALUES " + values, Statement.RETURN_GENERATED_KEYS);
+
 					//wyciagamy przydzielone ID
 					rs = st.getGeneratedKeys();
 	
 					if(rs.next()){
-						objectID = rs.getInt(primaryKey);
+						objectID = rs.getInt(1);
 					}
 					con.close();
 					return true;

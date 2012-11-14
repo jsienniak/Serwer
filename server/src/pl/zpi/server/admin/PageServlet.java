@@ -50,9 +50,8 @@ public class PageServlet extends HttpServlet {
 	
 		appPath = getServletContext().getRealPath("/");
 		try {
-			Class.forName("org.postgresql.Driver").getClass();
+			Class.forName("com.mysql.jdbc.Driver").getClass();
 		} catch (ClassNotFoundException e) {
-			message = "No driver";
 			e.printStackTrace();
 		}
 	}
@@ -101,7 +100,10 @@ public class PageServlet extends HttpServlet {
 				transformer = TransformerFactory.newInstance().newTransformer(new StreamSource(appPath+docName+".xsl"));
 			}
 			
-		} catch (TransformerConfigurationException | TransformerFactoryConfigurationError e) {
+		} catch ( TransformerFactoryConfigurationError e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TransformerConfigurationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

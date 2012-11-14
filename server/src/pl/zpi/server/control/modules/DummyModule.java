@@ -71,4 +71,11 @@ class Simulation extends Thread {
 		}
 	}
 
+	@Override
+	@Deprecated
+	public void destroy() {
+		running = false;
+		super.destroy();
+	}
+
 }

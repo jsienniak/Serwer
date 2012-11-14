@@ -27,6 +27,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import pl.zpi.server.control.events.AddDBUsers;
+import pl.zpi.server.control.events.DeleteDBUsers;
 import pl.zpi.server.control.events.ModifyDBUsers;
 import pl.zpi.server.control.events.ModuleGet;
 import pl.zpi.server.control.events.ModuleSet;
@@ -71,6 +72,7 @@ public class EventsServlet extends HttpServlet {
 		evm.registerEvent(new PrintDBUsers());
 		evm.registerEvent(new AddDBUsers());
 		evm.registerEvent(new ModifyDBUsers());
+		evm.registerEvent(new DeleteDBUsers());
 		// moduly
 		ModuleGet mg = new ModuleGet();
 		ModuleSet ms = new ModuleSet();
@@ -87,12 +89,12 @@ public class EventsServlet extends HttpServlet {
 		mg.put(m);
 		ms.put(m);
 		m = new DummyModule();
-		mg.put(m);
+		mg.put(m); 
 		ms.put(m);
 		evm.registerEvent(mg);
 		evm.registerEvent(ms);
 		try {
-			Class.forName("org.postgresql.Driver").getClass();
+			Class.forName("com.mysql.jdbc.Driver").getClass();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -137,8 +139,11 @@ public class EventsServlet extends HttpServlet {
 
 			transformer = TransformerFactory.newInstance().newTransformer();
 
-		} catch (TransformerConfigurationException | TransformerFactoryConfigurationError e) {
+		} catch (TransformerFactoryConfigurationError e) {
 
+			e.printStackTrace();
+		} catch (TransformerConfigurationException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
