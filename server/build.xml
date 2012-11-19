@@ -21,6 +21,9 @@
 		<copy todir="${app_root}">
 			<fileset dir="web" />
 		</copy>
+		<copy todir="${app_root}/config">
+			<fileset dir="config" />
+		</copy>
 	</target>
 	<target name="compile" depends="create">
 		<javac destdir="bin" excludes="*DBTest.java">
@@ -44,6 +47,7 @@
 	<target name="create" >
 		<mkdir dir="${app_root}" />
 		<mkdir dir="${app_root}/WEB-INF/classes/lib" />
+		<mkdir dir="${app_root}/config" />
 	</target> 
 	<path id="java">
 		<fileset dir="lib">

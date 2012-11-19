@@ -17,6 +17,8 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
+import pl.zpi.server.control.EventManager;
+import pl.zpi.server.utils.Config;
 import pl.zpi.server.utils.XMLCravler;
 
 
@@ -24,14 +26,17 @@ import pl.zpi.server.utils.XMLCravler;
 
 public class SQLConnectionTest {
 	public static void main(String[] args) throws IOException{
-	/*	DatabaseObject dbo;*/
+		Config.getConf();
+		System.out.println(Config.getConf().get("EVENTS_PATH"));
+		EventManager.getInstance().autoloadEvents();
+		/*	DatabaseObject dbo;*/
 		
 	/*	Iterator it =  dbo.getObjects("id_user > 1").iterator();
 		while(it.hasNext()){
 			System.out.println(((DatabaseObject)it.next()).data);
 		}*/
 /*		dbo = new DatabaseObject(1);	
-		dbo.read();*/
+		dbo.read();
 		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder;
 		Document doc = null;
@@ -74,7 +79,7 @@ public class SQLConnectionTest {
 
 		String xmlString = result.getWriter().toString();
 		System.out.println(xmlString);
-		/*
+		
 
 		
 		try {

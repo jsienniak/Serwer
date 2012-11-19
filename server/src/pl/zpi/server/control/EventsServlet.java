@@ -34,6 +34,7 @@ import pl.zpi.server.control.events.ModuleSet;
 import pl.zpi.server.control.events.Ping;
 import pl.zpi.server.control.events.PrintDBUsers;
 import pl.zpi.server.control.modules.DummyModule;
+import pl.zpi.server.utils.Config;
 
 /**
  * Servlet ktory przyjmuje polecenia i zwraca xml
@@ -67,12 +68,9 @@ public class EventsServlet extends HttpServlet {
 
 	@Override
 	public void init() throws ServletException {
+		Config.getConf().setWorkingDir(getServletContext().getRealPath("/"));
 		EventManager evm = EventManager.getInstance();
-		evm.registerEvent(new Ping());
-		evm.registerEvent(new PrintDBUsers());
-		evm.registerEvent(new AddDBUsers());
-		evm.registerEvent(new ModifyDBUsers());
-		evm.registerEvent(new DeleteDBUsers());
+		EventManager.autoloadEvents();
 		// moduly
 		ModuleGet mg = new ModuleGet();
 		ModuleSet ms = new ModuleSet();
