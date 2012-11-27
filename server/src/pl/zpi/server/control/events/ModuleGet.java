@@ -41,8 +41,8 @@ public class ModuleGet extends Event {
 			int moduleID = Integer.parseInt(mID);
 			int portNum = Integer.parseInt(pNum);
 			try{
-				int result = modules.get(moduleID).getValue(portNum);
-				return createDefaultResponse(doc, "module", "status", "OK", "message", "Value get","value",String.valueOf(result));
+				String result = modules.get(moduleID).getValue(portNum).toString();
+				return createDefaultResponse(doc, "module", "status", "OK", "message", "Value get","value",result);
 			}
 			catch(ArrayIndexOutOfBoundsException ex){
 				return createDefaultResponse(doc, "module", "status", "ERR", "message", "No such port number ("+ex.getMessage()+")");
@@ -50,7 +50,7 @@ public class ModuleGet extends Event {
 		
 			
 		} catch (Exception ex) {
-			return createDefaultResponse(doc, "module", "status", "ERR", "message", "Not a number or so");
+			return createDefaultResponse(doc, "module", "status", "ERR", "message", "Not a number or so ("+ex.getMessage()+")");
 		}
 	}
 

@@ -42,7 +42,7 @@ public class ModuleSet extends Event {
 			}
 			int moduleID = Integer.parseInt(mID);
 			int portNum = Integer.parseInt(pNum);
-			boolean result = modules.get(moduleID).setValue(portNum, Integer.parseInt(value));
+			boolean result = modules.get(moduleID).setValue(portNum, value.toString());
 			if (result) {
 				return createDefaultResponse(doc, "module", "status", "OK", "message", "Value set");
 			}

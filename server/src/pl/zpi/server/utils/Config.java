@@ -15,7 +15,7 @@ public class Config {
 	private  String workingDir;
 	public  void setWorkingDir(String dir){
 		workingDir = dir;
-		filePath = dir +  "config/server.properities";
+		filePath = dir +  "config/server.properties";
 		System.out.println("Config: new config dir is: "+filePath);
 		Config.getConf().readConfig();
 	}

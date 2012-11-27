@@ -2,7 +2,7 @@ package pl.zpi.server.control.modules;
 
 import pl.zpi.server.control.Module;
 
-public class DummyModule extends Module {
+public class DummyModule extends Module<Integer> {
 	Simulation s[];
 	public DummyModule() {
 		s = new Simulation[4];
@@ -13,17 +13,17 @@ public class DummyModule extends Module {
 	}
 
 	@Override
-	public int getValue(int i) {
+	public Integer getValue(int i) {
 		return s[i].internalState;
 	}
 
 	@Override
-	public boolean setValue(int port, int i) {
+	public boolean setValue(int port, String i) {
 		if(port < 0 || port >= s.length){
 			return false;
 		}
-		s[port].targetState = i;
-		return i < 100;
+		s[port].targetState = Integer.parseInt(i);
+		return Integer.parseInt(i) < 100;
 	}
 
 	@Override
@@ -37,13 +37,18 @@ public class DummyModule extends Module {
 	}
 
 	@Override
-	public int[] getValues() {
-		int result[] = new int[s.length];
+	public Integer[] getValues() {
+		Integer result[] = new Integer[s.length];
 		for(int i = 0; i < result.length; i++ ){
 			result[i] = s[i].internalState;
 		}
 		return result;
 	}
+
+    @Override
+    public boolean portInRange(int port) {
+        return port >= 0 || port < s.length;  //To change body of implemented methods use File | Settings | File Templates.
+    }
 
 }
 
