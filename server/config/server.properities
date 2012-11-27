@@ -1,0 +1,3 @@
+GCM_DEV_KEY=AIzaSyDDrRlgJ5JGcLOG2yDdfCTjjx34eNZGYy0
+EVENTS_PATH=WEB-INF/classes/pl/zpi/server/control/events
+EVENTS_PACKAGE=pl.zpi.server.control.events.
