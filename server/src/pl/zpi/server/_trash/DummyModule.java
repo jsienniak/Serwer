@@ -1,4 +1,4 @@
-package pl.zpi.server.control.modules;
+package pl.zpi.server._trash;
 
 import pl.zpi.server.control.Module;
 

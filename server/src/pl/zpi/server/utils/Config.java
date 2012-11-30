@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 public class Config {
 	
@@ -13,10 +14,11 @@ public class Config {
 	private static Config _instance;
 	private static Properties p;
 	private  String workingDir;
+	private static Logger logger = Logger.getLogger(Config.class.getName());
 	public  void setWorkingDir(String dir){
 		workingDir = dir;
-		filePath = dir +  "config/server.properties";
-		System.out.println("Config: new config dir is: "+filePath);
+		filePath = dir +  "config/server.properities";
+		logger.info("Config: new config dir is: "+filePath);
 		Config.getConf().readConfig();
 	}
 	public String getWorkingDirectory(){
@@ -32,7 +34,7 @@ public class Config {
 			in.close();
 		} catch (IOException e) {
 			if (e instanceof FileNotFoundException) {
-				System.out.println("Config: Nie znaleziono pliku");
+				System.out.println("Config: Nie znaleziono pliku ("+filePath+")");
 			} else {
 				System.out.println("IOException");
 			}

@@ -6,7 +6,12 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import pl.zpi.server.db.DatabaseObj;
-
+/**
+ * Klasa - morderca. Przemierza drzewo dokumentu w poszukiwaniu specyficznych tagów.
+ * Po odnalezieniu ich podmieniane są na wynik wywołania wskazanej funkcji
+ * @author mm
+ *
+ */
 public class XMLCravler {
 	
 	public static void processDocument(Document doc){

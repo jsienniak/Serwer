@@ -5,7 +5,7 @@
 	<classpathentry kind="lib" path="lib/postgresql-9.1-903.jdbc3.jar"/>
 	<classpathentry kind="lib" path="lib/serializer.jar"/>
 	<classpathentry kind="lib" path="lib/servlet-api-2.5-sources.jar"/>
-	<classpathentry kind="lib" path="lib/servlet-api-2.5.jar"/>
+	<classpathentry kind="lib" path="lib/servlet-api-2.5.jar" sourcepath="lib/servlet-api-2.5-sources.jar"/>
 	<classpathentry kind="lib" path="lib/xalan.jar"/>
 	<classpathentry kind="lib" path="lib/xercesImpl.jar"/>
 	<classpathentry kind="lib" path="lib/xml-apis.jar"/>

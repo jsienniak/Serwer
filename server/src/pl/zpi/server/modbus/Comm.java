@@ -11,7 +11,7 @@ import net.wimpi.modbus.util.BitVector;
 import net.wimpi.modbus.util.SerialParameters;
 
 /**
- * Created with IntelliJ IDEA.
+ * Created with IBlueJ
  * User: Jacek
  * Date: 16.11.12
  * Time: 19:16

@@ -28,7 +28,7 @@ public class SQLConnectionTest {
 	public static void main(String[] args) throws IOException{
 		Config.getConf();
 		System.out.println(Config.getConf().get("EVENTS_PATH"));
-		EventManager.getInstance().autoloadEvents();
+//		EventManager.getInstance().autoloadEvents();
 		/*	DatabaseObject dbo;*/
 		
 	/*	Iterator it =  dbo.getObjects("id_user > 1").iterator();

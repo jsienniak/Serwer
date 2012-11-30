@@ -1,46 +1,30 @@
 package pl.zpi.server.db;
 
+import java.util.Map;
+import java.util.logging.Logger;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Jacek
- * Date: 22.11.12
- * Time: 00:21
- * To change this template use File | Settings | File Templates.
- */
-public class DBHarmonogramy extends HashMap<Integer, Harmonogram> {
 
-    private int KEY = 0;
+public class DBHarmonogramy extends DatabaseObjImpl {
+	//FIXME columnNames static -> init
+	private static Logger logger = Logger.getLogger(DBHarmonogramy.class.getName());
+	public DBHarmonogramy(){
+		super(); 
+		if(columnNames == null){
+			getColumnNames();
+		}
+	}
+	public void config(){
+		this.primaryKey = "id_harmonogramy";
+		this.tableName = "harmonogramy";
+	}
+    public DBHarmonogramy(int i) {
+		super(i);
+	}
 
-    private static DBHarmonogramy INSTANCE;
-
-    public static DBHarmonogramy getInstance(){
-        if(INSTANCE==null){
-            INSTANCE = new DBHarmonogramy();
-        }
-        return INSTANCE;
-    }
-
-    private DBHarmonogramy(){
-        super();
-    }
-
-    public int add(Harmonogram h){
-        super.put(KEY++,h);
-        return KEY;
-    }
-
-    public Harmonogram get(int k){
-        return super.get(k);
-    }
-
-    public void remove(int k){
-        super.remove(k);
-    }
-
+	protected synchronized void getColumnNames(){
+		super.getColumnNames();
+	}
 }
 

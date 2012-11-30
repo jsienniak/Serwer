@@ -26,8 +26,14 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import pl.zpi.server.control.events.*;
-import pl.zpi.server.control.modules.*;
+import pl.zpi.server._trash.DummyModule;
+import pl.zpi.server.control.events.AddDBUsers;
+import pl.zpi.server.control.events.DeleteDBUsers;
+import pl.zpi.server.control.events.ModifyDBUsers;
+import pl.zpi.server.control.events.ModuleGet;
+import pl.zpi.server.control.events.ModuleSet;
+import pl.zpi.server.control.events.Ping;
+import pl.zpi.server.control.events.PrintDBUsers;
 import pl.zpi.server.utils.Config;
 
 /**
@@ -64,34 +70,27 @@ public class EventsServlet extends HttpServlet {
 	public void init() throws ServletException {
 		Config.getConf().setWorkingDir(getServletContext().getRealPath("/"));
 		EventManager evm = EventManager.getInstance();
-		//EventManager.autoloadEvents();
+		EventManager.autoloadEvents();
 		// moduly
 		ModuleGet mg = new ModuleGet();
 		ModuleSet ms = new ModuleSet();
-		Module m = new WodaModule();   //0
+		Module m = new DummyModule();
 		mg.put(m);
 		ms.put(m);
-		m = new RoletaModule();    //1
+		m = new DummyModule();
 		mg.put(m);
 		ms.put(m);
-		m = new BramaModule();   //2
+		m = new DummyModule();
 		mg.put(m);
 		ms.put(m);
-		m = new AlarmModule();   //3
+		m = new DummyModule();
 		mg.put(m);
 		ms.put(m);
-        m = new OgrodModule();   //4
-        mg.put(m);
-        ms.put(m);
-        m = new ModbusModule();   //5
-        mg.put(m);
-        ms.put(m);
-
-
-        HarmAdd ha = new HarmAdd();
-        evm.registerEvent(mg);
+		m = new DummyModule();
+		mg.put(m); 
+		ms.put(m);
+		evm.registerEvent(mg);
 		evm.registerEvent(ms);
-        evm.registerEvent(ha);
 		try {
 			Class.forName("com.mysql.jdbc.Driver").getClass();
 		} catch (ClassNotFoundException e) {

@@ -1,13 +1,9 @@
 package pl.zpi.server.admin;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.Arrays;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -29,8 +25,6 @@ import javax.xml.transform.stream.StreamSource;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import pl.zpi.server._trash.ITokenResolverClassLoader;
-import pl.zpi.server._trash.TokenReplacingReader;
 import pl.zpi.server.db.DBUsers;
 import pl.zpi.server.utils.XMLCravler;
 
@@ -82,6 +76,10 @@ public class PageServlet extends HttpServlet {
 		} catch (SAXException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch(FileNotFoundException ex){
+			PrintWriter pw = response.getWriter();
+			pw.print("<h2>404!</h2><h4>Nie odnaleziono pliku: ("+ex.getMessage()+")</h4>");
+	
 		}
 		XMLCravler.processDocument(doc);
 

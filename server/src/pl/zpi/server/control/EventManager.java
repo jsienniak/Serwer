@@ -5,7 +5,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import pl.zpi.server.utils.Config;
-
+/**
+ * Klasa zarządzająca zdarzeniami w systemie
+ * @author mm
+ *
+ */
 public class EventManager {
 	
 	private static EventManager _instance;
@@ -20,6 +24,9 @@ public class EventManager {
 		}
 		return _instance;
 	}
+	/**
+	 * Automatycznie ładowanie zdarzeń z pakietu podanego w konfiguracji
+	 */
 	public static void autoloadEvents(){
 		System.out.println("Starting autoload events");
 		File eventDir = new File(Config.getConf().getWorkingDirectory()+"/"+Config.getConf().getNotNull("EVENTS_PATH"));
@@ -51,23 +58,38 @@ public class EventManager {
 			}
 		}
 	}
+	/**
+	 * Rejestruje podane zdarzenie w systemie. Jeżeli zdarzenie o takiej samej nazwie jest już zarejestrowane to nie nastąpi jego ponowna rejestracja
+	 * @param e Obiekt zdarzenia do zarejestrowania
+	 */
 	public synchronized void registerEvent(Event e){
 		if(!eventMapping.containsKey(e)){
 			eventMapping.put(e.getName(), e);
 		}
 	}
-	
+	/**
+	 * Usuwa zdarzenie z rejestru zdarzeń
+	 * @param eventName nazwa wyrejestrowywanego zdarzenia
+	 */
 	public synchronized void unregisterEvent(String eventName){		
 		if(eventMapping.containsKey(eventName)){
 			eventMapping.remove(eventName);	
 		}
 	}
-	
+	/**
+	 * Usuwa zdarzenie z rejestru zdarzeń
+	 * @param eventName Obiekt wyrejestrowywanego zdarzenia <br> <b>Uwaga</b> Obiekty nie muszą być referencyjnie równoważne
+	 */
 	public synchronized void unregisterEvent(Event ev){
 		unregisterEvent(ev.getName());
 	}
 	
 	//TODO gdy null wyrzucic no such event Event
+	/**
+	 * Zwraca obiekt zdarzenia o podanej nazwie. Jeżeli zdarzenie nie jest zarejestrowane to zwraca null
+	 * @param eventName nazwa zdarzenia
+	 * @return
+	 */
 	public Event getByName(String eventName){
 		Event result = eventMapping.get(eventName);
 		return result;

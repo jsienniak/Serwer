@@ -7,9 +7,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import pl.zpi.server.db.DBUsers;
+import pl.zpi.server.db.DatabaseObjImpl;
 
-
+@SuppressWarnings("rawtypes")
 
 public class XMLToolkit {
 	public static Element createTextNode(Document d, String nodeName, String textContent) {
@@ -21,10 +21,10 @@ public class XMLToolkit {
 	public static Element packVector(Document doc, Vector v, String rootName) {
 		Element root = doc.createElement(rootName);
 
-		Iterator<DBUsers> it = v.iterator();
+		Iterator<DatabaseObjImpl> it = v.iterator();
 		while (it.hasNext()) {
 			
-			DBUsers o = it.next();
+			DatabaseObjImpl o = it.next();
 			Iterator it2 = o.data.keySet().iterator();
 			Element row = doc.createElement("row");
 			while (it2.hasNext()) {
