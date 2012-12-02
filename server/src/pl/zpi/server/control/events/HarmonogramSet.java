@@ -1,14 +1,14 @@
 package pl.zpi.server.control.events;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import pl.zpi.server.control.Event;
-import pl.zpi.server.control.Harmonogram;
-import pl.zpi.server.db.DBHarmonogramy;
-
-import static pl.zpi.server.utils.XMLToolkit.*;
+import static pl.zpi.server.utils.XMLToolkit.createDefaultResponse;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+
+import pl.zpi.server.control.Event;
+import pl.zpi.server.db.DBHarmonogramy;
 
 public class HarmonogramSet extends Event {
 

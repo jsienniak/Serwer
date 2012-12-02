@@ -1,10 +1,12 @@
 package pl.zpi.server.control.events;
 
+import static pl.zpi.server.utils.XMLToolkit.createTextNode;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-import static pl.zpi.server.utils.XMLToolkit.*;
+
 import pl.zpi.server.control.Event;
 
 public class Ping extends Event{

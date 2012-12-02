@@ -1,12 +1,10 @@
 package pl.zpi.server.control.modules;
 
 import gnu.io.CommPortIdentifier;
-import net.wimpi.modbus.net.SerialConnection;
-import net.wimpi.modbus.util.SerialParameters;
-import pl.zpi.server.control.Module;
-import pl.zpi.server.modbus.Comm;
 
 import java.util.Enumeration;
+
+import pl.zpi.server.control.Module;
 
 /**
  * Created with IntelliJ IDEA.

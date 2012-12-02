@@ -1,9 +1,8 @@
 package pl.zpi.server.control.events;
 
-import static pl.zpi.server.utils.XMLToolkit.*;
+import static pl.zpi.server.utils.XMLToolkit.createDefaultResponse;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +12,6 @@ import org.w3c.dom.Node;
 
 import pl.zpi.server.control.Event;
 import pl.zpi.server.control.Module;
-import pl.zpi.server.db.DBUsers;
 
 public class ModuleSet extends Event {
 	public boolean fullCheck = true;

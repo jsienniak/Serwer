@@ -38,6 +38,7 @@ public class PageServlet extends HttpServlet {
 	public static String appPath = "";
 	DBUsers o;
 
+	@Override
 	public void init() throws ServletException {
 		// Do required initialization
 
@@ -55,6 +56,7 @@ public class PageServlet extends HttpServlet {
 		doGet(req, resp);
 	}
 
+	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, FileNotFoundException {
 	
 		response.setContentType("text/html");
@@ -121,6 +123,7 @@ public class PageServlet extends HttpServlet {
 		out.println(xmlString);
 	}
 
+	@Override
 	public void destroy() {
 		// do nothing.
 	}

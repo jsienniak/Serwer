@@ -17,11 +17,13 @@ public class TokenReplacingReader extends Reader {
 	    this.tokenResolver  = resolver;
 	  }
 
-	  public int read(CharBuffer target) throws IOException {
+	  @Override
+	public int read(CharBuffer target) throws IOException {
 	    throw new RuntimeException("Operation Not Supported");
 	  }
 
-	  public int read() throws IOException {
+	  @Override
+	public int read() throws IOException {
 	    if(this.tokenValue != null){
 	      if(this.tokenValueIndex < this.tokenValue.length()){
 	        return this.tokenValue.charAt(this.tokenValueIndex++);
@@ -59,11 +61,13 @@ public class TokenReplacingReader extends Reader {
 
 	  }
 
-	  public int read(char cbuf[]) throws IOException {
+	  @Override
+	public int read(char cbuf[]) throws IOException {
 	    return read(cbuf, 0, cbuf.length);
 	  }
 
-	  public int read(char cbuf[], int off, int len) throws IOException {
+	  @Override
+	public int read(char cbuf[], int off, int len) throws IOException {
 	    int charsRead = 0;
 	    for(int i=0; i<len; i++){
 	        int nextChar = read();
@@ -79,27 +83,33 @@ public class TokenReplacingReader extends Reader {
 	    return charsRead;
 	  }
 
-	  public void close() throws IOException {
+	  @Override
+	public void close() throws IOException {
 	    this.pushbackReader.close();
 	  }
 
-	  public long skip(long n) throws IOException {
+	  @Override
+	public long skip(long n) throws IOException {
 	    throw new RuntimeException("Operation Not Supported");
 	  }
 
-	  public boolean ready() throws IOException {
+	  @Override
+	public boolean ready() throws IOException {
 	    return this.pushbackReader.ready();
 	  }
 
-	  public boolean markSupported() {
+	  @Override
+	public boolean markSupported() {
 	    return false;
 	  }
 
-	  public void mark(int readAheadLimit) throws IOException {
+	  @Override
+	public void mark(int readAheadLimit) throws IOException {
 	    throw new RuntimeException("Operation Not Supported");
 	  }
 
-	  public void reset() throws IOException {
+	  @Override
+	public void reset() throws IOException {
 	    throw new RuntimeException("Operation Not Supported");
 	  }
 	}

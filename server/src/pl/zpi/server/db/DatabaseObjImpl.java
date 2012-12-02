@@ -4,15 +4,13 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.SQLWarning;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Logger;
-
-import java.sql.ResultSetMetaData;
 /**
  * Klasa wspomagająca, ma zaimplementowane wszystkie metody potrzebne do jej obsługi
  * @author mm

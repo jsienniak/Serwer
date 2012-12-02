@@ -9,7 +9,7 @@ public class ITokenResolverClassLoader implements ITokenResolver {
 		try {
 			Class<DummySerializer> s = (Class<DummySerializer>) Class.forName(tokenName);
 			DummySerializer ser = s.newInstance();
-			return ser.getNode();
+			return DummySerializer.getNode();
 		} catch (ClassNotFoundException e) {
 			System.out.println("Token name: "+tokenName);
 			e.printStackTrace();

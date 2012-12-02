@@ -1,7 +1,6 @@
 package pl.zpi.server.control.modules;
 
 import pl.zpi.server.control.Module;
-import pl.zpi.server.modbus.Comm;
 
 /**
  * Created with IntelliJ IDEA.

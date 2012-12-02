@@ -4,9 +4,7 @@ import static pl.zpi.server.utils.XMLToolkit.createTextNode;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -27,13 +25,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import pl.zpi.server._trash.DummyModule;
-import pl.zpi.server.control.events.AddDBUsers;
-import pl.zpi.server.control.events.DeleteDBUsers;
-import pl.zpi.server.control.events.ModifyDBUsers;
 import pl.zpi.server.control.events.ModuleGet;
 import pl.zpi.server.control.events.ModuleSet;
-import pl.zpi.server.control.events.Ping;
-import pl.zpi.server.control.events.PrintDBUsers;
 import pl.zpi.server.utils.Config;
 
 /**

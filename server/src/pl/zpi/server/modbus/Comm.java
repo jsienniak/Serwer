@@ -2,7 +2,17 @@ package pl.zpi.server.modbus;
 
 import net.wimpi.modbus.ModbusCoupler;
 import net.wimpi.modbus.io.ModbusSerialTransaction;
-import net.wimpi.modbus.msg.*;
+import net.wimpi.modbus.msg.ModbusRequest;
+import net.wimpi.modbus.msg.ReadCoilsRequest;
+import net.wimpi.modbus.msg.ReadCoilsResponse;
+import net.wimpi.modbus.msg.ReadInputDiscretesRequest;
+import net.wimpi.modbus.msg.ReadInputDiscretesResponse;
+import net.wimpi.modbus.msg.ReadInputRegistersRequest;
+import net.wimpi.modbus.msg.ReadInputRegistersResponse;
+import net.wimpi.modbus.msg.ReadMultipleRegistersRequest;
+import net.wimpi.modbus.msg.ReadMultipleRegistersResponse;
+import net.wimpi.modbus.msg.WriteCoilRequest;
+import net.wimpi.modbus.msg.WriteSingleRegisterRequest;
 import net.wimpi.modbus.net.SerialConnection;
 import net.wimpi.modbus.procimg.InputRegister;
 import net.wimpi.modbus.procimg.Register;

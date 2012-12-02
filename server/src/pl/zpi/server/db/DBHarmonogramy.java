@@ -1,6 +1,5 @@
 package pl.zpi.server.db;
 
-import java.util.Map;
 import java.util.logging.Logger;
 
 
@@ -15,6 +14,7 @@ public class DBHarmonogramy extends DatabaseObjImpl {
 			getColumnNames();
 		}
 	}
+	@Override
 	public void config(){
 		this.primaryKey = "id_harmonogramy";
 		this.tableName = "harmonogramy";
@@ -23,6 +23,7 @@ public class DBHarmonogramy extends DatabaseObjImpl {
 		super(i);
 	}
 
+	@Override
 	protected synchronized void getColumnNames(){
 		super.getColumnNames();
 	}

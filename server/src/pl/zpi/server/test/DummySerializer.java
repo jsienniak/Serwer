@@ -3,8 +3,6 @@ package pl.zpi.server.test;
 import java.util.Iterator;
 import java.util.Vector;
 
-import org.apache.xerces.impl.XML11NamespaceBinder;
-
 import pl.zpi.server.db.DBUsers;
 
 

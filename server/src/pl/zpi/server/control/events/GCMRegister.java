@@ -1,28 +1,23 @@
 package pl.zpi.server.control.events;
 
-import static pl.zpi.server.utils.XMLToolkit.*;
+import static pl.zpi.server.utils.XMLToolkit.createDefaultResponse;
+import static pl.zpi.server.utils.XMLToolkit.createTextNode;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
+import pl.zpi.server.control.Event;
+import pl.zpi.server.db.DBDevices;
+import pl.zpi.server.utils.Config;
+
 import com.google.android.gcm.server.Constants;
 import com.google.android.gcm.server.Message;
-import com.google.android.gcm.server.MulticastResult;
 import com.google.android.gcm.server.Result;
 import com.google.android.gcm.server.Sender;
-
-import pl.zpi.server.control.Event;
-import pl.zpi.server.control.Module;
-import pl.zpi.server.db.DBDevices;
-import pl.zpi.server.db.DBUsers;
-import pl.zpi.server.utils.Config;
 
 public class GCMRegister extends Event {
 	public boolean fullCheck = true;

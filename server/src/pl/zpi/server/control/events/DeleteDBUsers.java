@@ -1,15 +1,11 @@
 package pl.zpi.server.control.events;
 
-import static pl.zpi.server.utils.XMLToolkit.*;
-
-import java.util.Date;
-
+import static pl.zpi.server.utils.XMLToolkit.createDefaultResponse;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-
 
 import pl.zpi.server.control.Event;
 import pl.zpi.server.db.DBUsers;

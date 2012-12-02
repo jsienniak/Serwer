@@ -1,18 +1,23 @@
 package pl.zpi.server;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.Arrays;
-import javax.servlet.*;
-import javax.servlet.http.*;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-
-import org.apache.xerces.parsers.XML11Configuration;
-
 
 import pl.zpi.server._trash.ITokenResolverClassLoader;
 import pl.zpi.server._trash.TokenReplacingReader;
@@ -29,6 +34,7 @@ public class ServTest extends HttpServlet {
 	public static String appPath = "";
 	DBUsers o;
 
+	@Override
 	public void init() throws ServletException {
 		// Do required initialization
 
@@ -42,6 +48,7 @@ public class ServTest extends HttpServlet {
 		}
 	}
 
+	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, FileNotFoundException {
 	
 		response.setContentType("text/html");
@@ -102,6 +109,7 @@ public class ServTest extends HttpServlet {
 
 	}
 
+	@Override
 	public void destroy() {
 		// do nothing.
 	}
