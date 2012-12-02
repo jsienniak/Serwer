@@ -26,12 +26,12 @@ public class XMLToolkit {
 			
 			DatabaseObjImpl o = it.next();
 			Iterator it2 = o.data.keySet().iterator();
-			Element row = doc.createElement("row");
+			Element row = doc.createElement(o.tableName);
 			while (it2.hasNext()) {
-				
 				String key = (String) it2.next();
 				row.appendChild(createTextNode(doc, key, o.get(key)));
 			}
+			root.setAttribute("count", String.valueOf(v.size()));
 			root.appendChild(row);
 		}
 

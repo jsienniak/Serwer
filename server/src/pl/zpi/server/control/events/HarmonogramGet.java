@@ -9,6 +9,7 @@ import org.w3c.dom.Node;
 
 import pl.zpi.server.control.Event;
 import pl.zpi.server.db.DBHarmonogramy;
+import pl.zpi.server.utils.XMLToolkit;
 
 public class HarmonogramGet extends Event {
 
@@ -17,19 +18,10 @@ public class HarmonogramGet extends Event {
 	public Node processEvent(Document doc, HttpServletRequest request) {
 		try {
 			DBHarmonogramy har = new DBHarmonogramy();
-			
-			har.set("g_start", request.getParameter("g_start"));
-			har.set("g_stop", request.getParameter("g_stop"));
-			har.set("dni", request.getParameter("dni"));
-			har.set("m_id",request.getParameter("m_id"));
-			har.set("p",request.getParameter("p"));
-			har.set("w_start",request.getParameter("w_start"));
-			har.set("w_end",request.getParameter("w_end"));
-			har.set("active",request.getParameter("active"));
-			
-			
-			har.write();
-			return createDefaultResponse(doc, "result", "status", "OK", "message", String.valueOf(har.getId()));
+			Node root = createDefaultResponse(doc, "result", "message", "OK", "message", "");
+			root.appendChild(XMLToolkit.packVector(doc, har.executeQuery(), "list"));
+			return root;
+		//	return createDefaultResponse(doc, "result", "status", "OK", "message", String.valueOf(har.getId()));
 		} catch (NumberFormatException ex) {
 			return createDefaultResponse(doc, "result", "status", "err", "message", "Invalid number exception");
 		}
