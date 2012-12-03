@@ -12,7 +12,7 @@ public class ProfileSet extends Event {
 
 	@Override
 	public Node processEvent(Document doc, HttpServletRequest request) {
-			return XMLToolkit.createDefaultResponse(doc, "result", "status", "ERR", "message", "Not yet implemented");
+		return XMLToolkit.createDefaultResponse(doc, "result", "status", "ERR", "message", "Not yet implemented");
 	}
 
 	@Override

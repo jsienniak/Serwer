@@ -18,7 +18,7 @@ public class Wazzup extends Event{
 	public Node processEvent(Document doc, HttpServletRequest request) {
 		//precheck
 		Element resp = doc.createElement("user");
-		return null;
+		return createDefaultResponse(doc, "result", "status", "ERR","message", "Not yet implemented");
 	//	if(dbu.write()){
 	//		return createDefaultResponse(doc, "user", "status" , "OK" , "message", "Success");
 	//	}else{

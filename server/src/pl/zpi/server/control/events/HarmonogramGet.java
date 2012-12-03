@@ -18,7 +18,7 @@ public class HarmonogramGet extends Event {
 	public Node processEvent(Document doc, HttpServletRequest request) {
 		try {
 			DBHarmonogramy har = new DBHarmonogramy();
-			Node root = createDefaultResponse(doc, "result", "message", "OK", "message", "");
+			Node root = createDefaultResponse(doc, "result", "Status", "OK", "message", "");
 			root.appendChild(XMLToolkit.packVector(doc, har.executeQuery(), "list"));
 			return root;
 		//	return createDefaultResponse(doc, "result", "status", "OK", "message", String.valueOf(har.getId()));
