@@ -281,7 +281,7 @@ public class  DatabaseObjImpl implements DatabaseObj {
 				getColumnNames(st);
 			}
 
-			con.close();
+			
 
 			Vector<DatabaseObj> result = new Vector<DatabaseObj>();
 			while (rs.next()) {
@@ -292,6 +292,7 @@ public class  DatabaseObjImpl implements DatabaseObj {
 				result.add(dbo);
 				dbo = null;
 			}
+			con.close();
 			return result;
 		} catch (SQLException e) {
 			logger.severe("BLAD. Niepoprawna skladnia");

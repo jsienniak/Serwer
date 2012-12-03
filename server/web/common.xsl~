@@ -41,7 +41,7 @@
 					<div class="nav-collapse collapse">
 						<ul class="nav">
 							<li class="active"><a href="users.html"><i class="icon-home"></i>Użytkownicy</a></li>
-							<li class="active"></li>
+							<li><a href="timetable.html"><i class="icon-home"></i>Harmonogramy</li>
 <!-- 							<li><a href="admin_trans.html"><i class="icon-random"></i>Liczniki i transakcje</a></li>
 							<li><a href="admin_msg.html"><i class="icon-envelope"></i>Sprawy lokatorów</a></li>
 							<li><a href="admin_ogloszenia.html"><i class="icon-envelope"></i>Ogłoszenia</a></li>	 -->								

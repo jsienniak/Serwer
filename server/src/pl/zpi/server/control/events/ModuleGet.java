@@ -4,6 +4,7 @@ import static pl.zpi.server.utils.XMLToolkit.createDefaultResponse;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -57,5 +58,9 @@ public class ModuleGet extends Event {
 	@Override
 	public String getName() {
 		return "module.get";
+	}
+	
+	public List getModules(){
+		return modules;
 	}
 }

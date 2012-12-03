@@ -10,14 +10,14 @@ import org.w3c.dom.Node;
 import pl.zpi.server.control.Event;
 import pl.zpi.server.db.DBHarmonogramy;
 
-public class HarmonogramSet extends Event {
+public class HarmonogramSet extends Event { 
 
 	// action=harmonogram.set&dni=1234&g_start=12:00&g_stop=2:00&m_id=2&p=2&w_start=2&w_stop=3&active=0
 	@Override
 	public Node processEvent(Document doc, HttpServletRequest request) {
 		try {
 			DBHarmonogramy har = new DBHarmonogramy();
-			
+			  
 			har.set("g_start", request.getParameter("g_start"));
 			har.set("g_stop", request.getParameter("g_stop"));
 			har.set("dni", request.getParameter("dni"));

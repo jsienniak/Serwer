@@ -15,6 +15,10 @@
 	version="2.4">
 
 	<display-name>servtest</display-name>
+	<listener>
+    <description>Podstawowy listener, odpala wątki wymagane nawet przed startem aplikacji</description>
+    <listener-class>pl.zpi.server.control.Autostart</listener-class>
+	</listener>
 	<description>
      Test servera
   </description>
