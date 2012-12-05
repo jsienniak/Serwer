@@ -13,7 +13,7 @@ public class SchedulerStart  extends Event {
 
 	@Override
 	public Node processEvent(Document doc, HttpServletRequest request) {
-		Scheduler sch = new Scheduler();
+		Scheduler sch = Scheduler.getInstance();
 		return XMLToolkit.createDefaultResponse(doc, "result", "status", "ERR", "message", "Not yet implemented");
 	}
 

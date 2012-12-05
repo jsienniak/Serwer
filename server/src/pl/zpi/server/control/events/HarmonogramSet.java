@@ -8,6 +8,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 import pl.zpi.server.control.Event;
+import pl.zpi.server.control.Scheduler;
 import pl.zpi.server.db.DBHarmonogramy;
 
 public class HarmonogramSet extends Event { 
@@ -27,7 +28,7 @@ public class HarmonogramSet extends Event {
 			har.set("w_end",request.getParameter("w_end"));
 			har.set("active",request.getParameter("active"));
 			
-			
+			Scheduler.getInstance().checkSchedule(har);
 			har.write();
 			return createDefaultResponse(doc, "result", "status", "OK", "message", String.valueOf(har.getId()));
 		} catch (NumberFormatException ex) {

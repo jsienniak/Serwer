@@ -21,18 +21,33 @@ public class Scheduler {
 	 */
 	private static ScheduledExecutorService ses;
 	private static ScheduledExecutorService ses2;
-
-	public Scheduler() {
+	private SchedulerThread schedulerThread;
+	private static Scheduler _instance;
+	private Scheduler() {
 		if (ses == null) {
 			ses2 = Executors.newScheduledThreadPool(250);
 			ses = Executors.newSingleThreadScheduledExecutor();
 			// ses.scheduleAtFixedRate(new SchedulerThread(ses2), 0, 24,
 			// TimeUnit.HOURS);
-			ses.submit(new SchedulerThread(ses2));
+			schedulerThread = new SchedulerThread(ses2);
+			ses.submit(schedulerThread);
 			// readDB();
 		}
 	}
-
+	public static Scheduler getInstance(){
+		if(_instance == null){
+			_instance = new Scheduler();
+		}
+		return _instance;
+	}
+	/**
+	 * Funkcja sprawdza, czy dany obiekt harmonogramu jest do wykonania dzisiaj,
+	 * jeżeli tak to umieszcza go w póli do wykonania
+	 * @param sch
+	 */
+	public void checkSchedule(DBHarmonogramy sch){
+		schedulerThread.checkSchedule(sch);
+	}
 	/**
 	 * Dodanie harmonogramu do schedulera. Funkcja sprawdza czy dana akcja
 	 * przewidziana jest na dzień dzisiejszy. Jeżeli nie jest to nie zostaje
@@ -69,7 +84,51 @@ class SchedulerThread implements Runnable {
 	public void run() {
 		readDB();
 	}
+	public synchronized void checkSchedule(DBHarmonogramy har){
+		logger.info("Checking new schedule");
+		Calendar c = Calendar.getInstance();
+		int currentDayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+		String days = har.get("dni");
+		
+		//jest git, dzień pasuje
+		if(days.indexOf(String.valueOf(currentDayOfWeek - 1)) >= 0){
+			logger.info("New Schedule is for today");
+			String s_time = har.getStringNotNull(DBHarmonogramy.g_start);
+			int hour = Integer.parseInt(s_time.substring(0, 2));
+			int hourDiff = hour - c.get(Calendar.HOUR_OF_DAY);
+			if (hourDiff >= 0) {
+				int minute = Integer.parseInt(s_time.substring(3, 5));
+				int minuteDiff = minute - c.get(Calendar.MINUTE);
 
+				int delayInSec = hourDiff * 3600 + minuteDiff * 60;
+
+				int port = har.getInt(DBHarmonogramy.port);
+				int val = har.getInt(DBHarmonogramy.w_start);
+				int module = har.getInt(DBHarmonogramy.module);
+
+				logger.info("Scheduled IN in "+delayInSec+" sec");
+				if(delayInSec > 0){
+					ses.schedule(new WorkerThread(module, port, val), delayInSec, TimeUnit.SECONDS);
+	
+					String e_time = har.getStringNotNull(DBHarmonogramy.g_stop);
+					hour = Integer.parseInt(e_time.substring(0, 2));
+					hourDiff = hour - c.get(Calendar.HOUR_OF_DAY);
+	
+					minute = Integer.parseInt(e_time.substring(3, 5));
+					minuteDiff = minute - c.get(Calendar.MINUTE);
+	
+					delayInSec = hourDiff * 3600 + minuteDiff * 60;
+	
+					port = har.getInt(DBHarmonogramy.port);
+					val = har.getInt(DBHarmonogramy.w_stop);
+					module = har.getInt(DBHarmonogramy.module);
+	
+					logger.info("Scheduled END in "+delayInSec+" sec");
+					ses.schedule(new WorkerThread(module, port, val), delayInSec, TimeUnit.SECONDS);
+				}
+			}
+		}
+	}
 	/**
 	 * Metoda wyciąga z bazy danych wszystkie harmonogramy na aktualny dzien
 	 * tygodnia i umieszcza je w kolejne do wykonania.
@@ -101,23 +160,25 @@ class SchedulerThread implements Runnable {
 				int module = o.getInt(DBHarmonogramy.module);
 
 				logger.info("Scheduled IN in "+delayInSec+" sec");
-				ses.schedule(new WorkerThread(module, port, val), delayInSec, TimeUnit.SECONDS);
-
-				String e_time = o.getStringNotNull(DBHarmonogramy.g_stop);
-				hour = Integer.parseInt(e_time.substring(0, 2));
-				hourDiff = hour - c.get(Calendar.HOUR_OF_DAY);
-
-				minute = Integer.parseInt(e_time.substring(3, 5));
-				minuteDiff = minute - c.get(Calendar.MINUTE);
-
-				delayInSec = hourDiff * 3600 + minuteDiff * 60;
-
-				port = o.getInt(DBHarmonogramy.port);
-				val = o.getInt(DBHarmonogramy.w_stop);
-				module = o.getInt(DBHarmonogramy.module);
-
-				logger.info("Scheduled END in "+delayInSec+" sec");
-				ses.schedule(new WorkerThread(module, port, val), delayInSec, TimeUnit.SECONDS);
+				if(delayInSec > 0){
+					ses.schedule(new WorkerThread(module, port, val), delayInSec, TimeUnit.SECONDS);
+	
+					String e_time = o.getStringNotNull(DBHarmonogramy.g_stop);
+					hour = Integer.parseInt(e_time.substring(0, 2));
+					hourDiff = hour - c.get(Calendar.HOUR_OF_DAY);
+	
+					minute = Integer.parseInt(e_time.substring(3, 5));
+					minuteDiff = minute - c.get(Calendar.MINUTE);
+	
+					delayInSec = hourDiff * 3600 + minuteDiff * 60;
+	
+					port = o.getInt(DBHarmonogramy.port);
+					val = o.getInt(DBHarmonogramy.w_stop);
+					module = o.getInt(DBHarmonogramy.module);
+	
+					logger.info("Scheduled END in "+delayInSec+" sec");
+					ses.schedule(new WorkerThread(module, port, val), delayInSec, TimeUnit.SECONDS);
+				}
 			}
 		}
 	}
