@@ -121,7 +121,7 @@ class SchedulerThread implements Runnable {
 					delayInSec = hourDiff * 3600 + minuteDiff * 60;
 	
 					port = har.getInt(DBHarmonogramy.port);
-					val = har.getInt(DBHarmonogramy.w_stop);
+					val = har.getInt(DBHarmonogramy.w_end);
 					module = har.getInt(DBHarmonogramy.module);
 	
 					logger.info("Scheduled END in "+delayInSec+" sec");
@@ -175,7 +175,7 @@ class SchedulerThread implements Runnable {
 					delayInSec = hourDiff * 3600 + minuteDiff * 60;
 	
 					port = o.getInt(DBHarmonogramy.port);
-					val = o.getInt(DBHarmonogramy.w_stop);
+					val = o.getInt(DBHarmonogramy.w_end);
 					module = o.getInt(DBHarmonogramy.module);
 	
 					logger.info("Scheduled END in "+delayInSec+" sec");

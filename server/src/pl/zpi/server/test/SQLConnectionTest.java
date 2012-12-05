@@ -2,9 +2,6 @@ package pl.zpi.server.test;
 import java.io.IOException;
 import java.util.Calendar;
 
-import pl.zpi.server.db.DBHarmonogramy;
-import pl.zpi.server.utils.Config;
-
 
 
 

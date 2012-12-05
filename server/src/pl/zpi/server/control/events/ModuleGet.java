@@ -4,7 +4,6 @@ import static pl.zpi.server.utils.XMLToolkit.createDefaultResponse;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
