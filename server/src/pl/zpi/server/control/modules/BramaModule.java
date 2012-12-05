@@ -1,6 +1,7 @@
 package pl.zpi.server.control.modules;
 
 import pl.zpi.server.control.Module;
+import pl.zpi.server.modbus.Comm;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,31 +19,32 @@ public class BramaModule extends Module<Boolean> {
     private static int BRAMA_COMMAND = 4;
 
 
-    /*@Override
-    public Boolean getValue(int port) {
-        if(!portInRange(port)){
-            throw new IllegalArgumentException();
-        }
-        return Comm.getInstance().readIn(BRAMA_STATUS);  //To change body of implemented methods use File | Settings | File Templates.
-    }*/
-
     @Override
     public Boolean getValue(int port) {
         if(!portInRange(port)){
             throw new IllegalArgumentException();
         }
-        return value;  //To change body of implemented methods use File | Settings | File Templates.
+        return Comm.getInstance().readIn(BRAMA_STATUS);  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    /*@Override
+
+
+    @Override
     public boolean setValue(int port, String value) {
         if(!portInRange(port)){
             throw new IllegalArgumentException();
         }
         Comm.getInstance().writeANOut(BRAMA_COMMAND,Boolean.valueOf(value)?1:0);
         return true;
-    }*/
+    }
 
+    /*@Override
+    public Boolean getValue(int port) {
+        if(!portInRange(port)){
+            throw new IllegalArgumentException();
+        }
+        return value;  //To change body of implemented methods use File | Settings | File Templates.
+    }
     @Override
     public boolean setValue(int port, String value) {
         if(!portInRange(port)){
@@ -50,7 +52,7 @@ public class BramaModule extends Module<Boolean> {
         }
         this.value=Boolean.parseBoolean(value);
         return true;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+    }*/
 
     @Override
     public Boolean[] getValues() {

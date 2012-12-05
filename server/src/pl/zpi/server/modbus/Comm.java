@@ -2,17 +2,7 @@ package pl.zpi.server.modbus;
 
 import net.wimpi.modbus.ModbusCoupler;
 import net.wimpi.modbus.io.ModbusSerialTransaction;
-import net.wimpi.modbus.msg.ModbusRequest;
-import net.wimpi.modbus.msg.ReadCoilsRequest;
-import net.wimpi.modbus.msg.ReadCoilsResponse;
-import net.wimpi.modbus.msg.ReadInputDiscretesRequest;
-import net.wimpi.modbus.msg.ReadInputDiscretesResponse;
-import net.wimpi.modbus.msg.ReadInputRegistersRequest;
-import net.wimpi.modbus.msg.ReadInputRegistersResponse;
-import net.wimpi.modbus.msg.ReadMultipleRegistersRequest;
-import net.wimpi.modbus.msg.ReadMultipleRegistersResponse;
-import net.wimpi.modbus.msg.WriteCoilRequest;
-import net.wimpi.modbus.msg.WriteSingleRegisterRequest;
+import net.wimpi.modbus.msg.*;
 import net.wimpi.modbus.net.SerialConnection;
 import net.wimpi.modbus.procimg.InputRegister;
 import net.wimpi.modbus.procimg.Register;
@@ -21,7 +11,7 @@ import net.wimpi.modbus.util.BitVector;
 import net.wimpi.modbus.util.SerialParameters;
 
 /**
- * Created with IBlueJ
+ * Created with IntelliJ IDEA.
  * User: Jacek
  * Date: 16.11.12
  * Time: 19:16
@@ -32,11 +22,16 @@ public class Comm {
     private static int OUTCOUNT = 16;
     private static int INCOUNT = 16;
     private static int ANOUTCOUNT = 16;
-    private static int ANINCOUNT = 16;
+    private static int ANINCOUNT = 8;
 
     private static String PORTNAME = "COM1";
     private static int UNITID = 2;
     private static long timespan = 1000;
+    private static long ANtimespan = 3000;
+    private static boolean valid = false;
+    private static boolean ANvalid  = false;
+    private static boolean outvalid = false;
+    private static boolean ANoutvalid  = false;
 
     private SerialParameters params;
     private long readOutTimestamp = 0;
@@ -73,7 +68,7 @@ public class Comm {
 
     public synchronized boolean readIn(int index){
         SerialConnection con = null;
-        if (System.currentTimeMillis() - readInTimestamp > timespan) {
+        if (System.currentTimeMillis() - readInTimestamp > timespan || !valid) {
             try {
                 con = new SerialConnection(params);
                 con.open();
@@ -86,6 +81,7 @@ public class Comm {
                 trans.execute();
                 ReadInputDiscretesResponse res = (ReadInputDiscretesResponse) trans.getResponse();
                 readInBitVector = res.getDiscretes();
+                valid = true;
             } catch (Exception e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             } finally {
@@ -98,7 +94,7 @@ public class Comm {
 
     public synchronized boolean readOut(int index) {
         SerialConnection con = null;
-        if (System.currentTimeMillis() - readOutTimestamp > timespan) {
+        if (System.currentTimeMillis() - readOutTimestamp > timespan ||!outvalid) {
             try {
                 con = new SerialConnection(params);
                 con.open();
@@ -111,6 +107,7 @@ public class Comm {
                 trans.execute();
                 ReadCoilsResponse res = (ReadCoilsResponse) trans.getResponse();
                 readOutBitVector = res.getCoils();
+                outvalid = true;
             } catch (Exception e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             } finally {
@@ -122,11 +119,11 @@ public class Comm {
 
     public synchronized int readAnalogIn(int index){
         SerialConnection con = null;
-        if (System.currentTimeMillis() - readANINTimestamp > timespan) {
+        if (System.currentTimeMillis() - readANINTimestamp > ANtimespan || !ANvalid) {
             try {
                 con = new SerialConnection(params);
                 con.open();
-                ModbusRequest req = new ReadInputRegistersRequest(index,ANINCOUNT);
+                ModbusRequest req = new ReadInputRegistersRequest(0,ANINCOUNT);
                 req.setUnitID(UNITID);
                 req.setHeadless();
                 ModbusSerialTransaction trans = new ModbusSerialTransaction(con);
@@ -135,6 +132,7 @@ public class Comm {
                 trans.execute();
                 ReadInputRegistersResponse res = (ReadInputRegistersResponse) trans.getResponse();
                 readANINRegisters = res.getRegisters();
+                ANvalid = true;
             } catch (Exception e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             } finally {
@@ -147,11 +145,11 @@ public class Comm {
 
     public synchronized int readAnalogOut(int index) {
         SerialConnection con = null;
-        if (System.currentTimeMillis() - readANOUTTimestamp > timespan) {
+        if (System.currentTimeMillis() - readANOUTTimestamp > ANtimespan || !ANoutvalid) {
             try {
                 con = new SerialConnection(params);
                 con.open();
-                ModbusRequest req = new ReadMultipleRegistersRequest(index,ANOUTCOUNT);
+                ModbusRequest req = new ReadMultipleRegistersRequest(0,ANOUTCOUNT);
                 req.setUnitID(UNITID);
                 req.setHeadless();
                 ModbusSerialTransaction trans = new ModbusSerialTransaction(con);
@@ -160,6 +158,7 @@ public class Comm {
                 trans.execute();
                 ReadMultipleRegistersResponse res = (ReadMultipleRegistersResponse) trans.getResponse();
                 readANOUTRegisters = res.getRegisters();
+                ANoutvalid = true;
             } catch (Exception e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             } finally {
@@ -180,6 +179,7 @@ public class Comm {
             ModbusSerialTransaction trans = new ModbusSerialTransaction(con);
             trans.setRequest(req);
             trans.execute();
+            outvalid = false;
         } catch (Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } finally {
@@ -198,6 +198,7 @@ public class Comm {
             ModbusSerialTransaction trans = new ModbusSerialTransaction(con);
             trans.setRequest(req);
             trans.execute();
+            ANoutvalid = false;
         } catch (Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } finally {

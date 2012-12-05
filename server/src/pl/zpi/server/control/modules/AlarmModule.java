@@ -1,6 +1,7 @@
 package pl.zpi.server.control.modules;
 
 import pl.zpi.server.control.Module;
+import pl.zpi.server.modbus.Comm;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,7 +20,7 @@ public class AlarmModule extends Module<Integer> {
 
 
 
-    /*@Override
+    @Override
     public Integer getValue(int port) {
         if(!portInRange(port)){
             throw new IllegalArgumentException();
@@ -37,17 +38,11 @@ public class AlarmModule extends Module<Integer> {
                 break;
         }
         return wyn;  //To change body of implemented methods use File | Settings | File Templates.
-    }*/
-
-    @Override
-    public Integer getValue(int port) {
-        if(!portInRange(port)){
-            throw new IllegalArgumentException();
-        }
-        return values[port];
     }
 
-   /* @Override
+
+
+    @Override
     public boolean setValue(int port, String value) {
         if(!portInRange(port)){
             throw new IllegalArgumentException();
@@ -61,7 +56,15 @@ public class AlarmModule extends Module<Integer> {
                 return true;
         }
         return false;  //To change body of implemented methods use File | Settings | File Templates.
-    }*/
+    }
+
+    /*@Override
+    public Integer getValue(int port) {
+        if(!portInRange(port)){
+            throw new IllegalArgumentException();
+        }
+        return values[port];
+    }
 
     @Override
     public boolean setValue(int port, String value) {
@@ -70,7 +73,7 @@ public class AlarmModule extends Module<Integer> {
         }
         values[port]=Integer.parseInt(value);
         return true;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+    }*/
 
     @Override
     public Integer[] getValues() {

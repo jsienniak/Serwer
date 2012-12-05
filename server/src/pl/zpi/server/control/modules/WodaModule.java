@@ -1,6 +1,7 @@
 package pl.zpi.server.control.modules;
 
 import pl.zpi.server.control.Module;
+import pl.zpi.server.modbus.Comm;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,13 +16,13 @@ public class WodaModule extends Module<Integer> {
     * odczytac zadana temperature port 0
     * i odczytac aktualna temperature port 1
      */
-    private static int WODA_ZADANA =0;
-    private static int WODA_AKTUALNA =0;
+    private static int WODA_ZADANA =9;
+    private static int WODA_AKTUALNA =4;
 
     Integer[] values = new Integer[]{25,25};
 
 
-    @Override
+    /*@Override
     public Integer getValue(int port) {
         if(!portInRange(port)){
             throw new IllegalArgumentException();
@@ -36,9 +37,9 @@ public class WodaModule extends Module<Integer> {
         }
         values[port] = Integer.parseInt(value);
         return true;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+    }*/
 
-    /*@Override
+    @Override
     public Integer getValue(int port){
         if(!portInRange(port)){
             throw new IllegalArgumentException();
@@ -52,7 +53,7 @@ public class WodaModule extends Module<Integer> {
         }
         Comm.getInstance().writeANOut(WODA_ZADANA,Integer.parseInt(value));
         return true;
-    }*/
+    }
 
     @Override
     public Integer[] getValues() {

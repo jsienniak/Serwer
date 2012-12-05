@@ -1,6 +1,7 @@
 package pl.zpi.server.control.modules;
 
 import pl.zpi.server.control.Module;
+import pl.zpi.server.modbus.Comm;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,7 +16,7 @@ public class RoletaModule extends Module<Integer> {
 
     private static int ROLETA=0;
 
-    @Override
+    /*@Override
     public Integer getValue(int port) {
         if(!portInRange(port)){
                  throw new IllegalArgumentException();
@@ -30,9 +31,9 @@ public class RoletaModule extends Module<Integer> {
         }
         this.value=Integer.parseInt(value);
         return true;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+    }*/
 
-    /*@Override
+    @Override
     public Integer getValue(int port){
         if(!portInRange(port)){
             throw new IllegalArgumentException();
@@ -47,7 +48,7 @@ public class RoletaModule extends Module<Integer> {
         }
         Comm.getInstance().writeANOut(ROLETA,Integer.parseInt(value));
         return true;
-    }*/
+    }
 
     @Override
     public Integer[] getValues() {

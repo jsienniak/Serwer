@@ -4,7 +4,9 @@ import static pl.zpi.server.utils.XMLToolkit.createTextNode;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -24,9 +26,8 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import pl.zpi.server._trash.DummyModule;
-import pl.zpi.server.control.events.ModuleGet;
-import pl.zpi.server.control.events.ModuleSet;
+import pl.zpi.server.control.events.*;
+import pl.zpi.server.control.modules.*;
 import pl.zpi.server.utils.Config;
 
 /**
@@ -67,23 +68,57 @@ public class EventsServlet extends HttpServlet {
 		// moduly
 		ModuleGet mg = new ModuleGet();
 		ModuleSet ms = new ModuleSet();
-		Module m = new DummyModule();
+		Module m = new WodaModule();   //0
 		mg.put(m);
 		ms.put(m);
-		m = new DummyModule();
+		m = new RoletaModule();    //1
 		mg.put(m);
 		ms.put(m);
-		m = new DummyModule();
+		m = new BramaModule();   //2
 		mg.put(m);
 		ms.put(m);
-		m = new DummyModule();
+		m = new AlarmModule();   //3
 		mg.put(m);
 		ms.put(m);
-		m = new DummyModule();
-		mg.put(m); 
-		ms.put(m);
-		evm.registerEvent(mg);
+        m = new OgrodModule();   //4
+        mg.put(m);
+        ms.put(m);
+        m = new ModbusModule();   //5
+        mg.put(m);
+        ms.put(m);
+
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                AlarmModule alarm = new AlarmModule();
+                System.out.println("Załadowano.");
+                boolean al = false;
+                while(true){
+                    if(alarm.getValue(2)>0){
+                        if(!al){
+                            al=true;
+                            System.out.println("ALARM!!");
+                            //Tutaj obsluga alarmu!!;
+                        }
+                    } else {
+                        al = false;
+                    }
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                    }
+                }
+
+            }
+        });
+
+        t.start();
+
+
+        evm.registerEvent(mg);
 		evm.registerEvent(ms);
+   
 		try {
 			Class.forName("com.mysql.jdbc.Driver").getClass();
 		} catch (ClassNotFoundException e) {
