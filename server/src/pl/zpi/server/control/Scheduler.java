@@ -105,9 +105,10 @@ class SchedulerThread implements Runnable {
 				int port = har.getInt(DBHarmonogramy.port);
 				int val = har.getInt(DBHarmonogramy.w_start);
 				int module = har.getInt(DBHarmonogramy.module);
-
-				logger.info("Scheduled IN in "+delayInSec+" sec");
+				
 				if(delayInSec > 0){
+				logger.info("Scheduled IN in "+delayInSec+" sec");
+				
 					ses.schedule(new WorkerThread(module, port, val), delayInSec, TimeUnit.SECONDS);
 	
 					String e_time = har.getStringNotNull(DBHarmonogramy.g_stop);
@@ -158,9 +159,10 @@ class SchedulerThread implements Runnable {
 				int port = o.getInt(DBHarmonogramy.port);
 				int val = o.getInt(DBHarmonogramy.w_start);
 				int module = o.getInt(DBHarmonogramy.module);
-
-				logger.info("Scheduled IN in "+delayInSec+" sec");
+				
 				if(delayInSec > 0){
+				logger.info("Scheduled IN in "+delayInSec+" sec");
+				
 					ses.schedule(new WorkerThread(module, port, val), delayInSec, TimeUnit.SECONDS);
 	
 					String e_time = o.getStringNotNull(DBHarmonogramy.g_stop);
