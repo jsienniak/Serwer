@@ -10,7 +10,11 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 import pl.zpi.server.control.Event;
+import pl.zpi.server.control.modules.OgrodModule;
+import pl.zpi.server.control.modules.RoletaModule;
+import pl.zpi.server.control.modules.WodaModule;
 import pl.zpi.server.db.DBProfiles;
+import pl.zpi.server.modbus.Comm;
 
 public class ProfileUse extends Event {
 
@@ -24,7 +28,10 @@ public class ProfileUse extends Event {
 				return createDefaultResponse(doc, "result", "status", "err", "message", "No such profile ("+name+")");
 			}
 			DBProfiles prof = (DBProfiles) v.get(0);
-			//TODO ustawianie na sterowniku
+            (new WodaModule()).setValue(0,prof.get(DBProfiles.value1));
+            (new RoletaModule()).setValue(0,prof.get(DBProfiles.value2));
+            (new OgrodModule()).setValue(0, prof.get(DBProfiles.value3));
+
 			return createDefaultResponse(doc, "result", "status", "OK", "message", "");
 
 	}

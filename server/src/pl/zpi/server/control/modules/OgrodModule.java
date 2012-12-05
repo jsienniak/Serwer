@@ -14,15 +14,15 @@ public class OgrodModule extends Module<Boolean> {
 
     Boolean values[] = new Boolean[]{false,false,false};
 
-    private static int OGROD_COMMAND =2;
-    private static int OGROD_STATUS =0;
+    private static int OGROD_COMMAND =4;
+    private static int OGROD_STATUS =3;
     private static int TRYB_CZUJKI =0;
 
     /* zapis port0 command port1 tryb czujki
     *odczyt port0 status port1 tryb czujki
      */
 
-    /*@Override
+    //**@Override
     public Boolean getValue(int port) {
         if(!portInRange(port)){
             throw new IllegalArgumentException();
@@ -37,14 +37,14 @@ public class OgrodModule extends Module<Boolean> {
         }
         values[port]=Boolean.parseBoolean(value);
         return true;  //To change body of implemented methods use File | Settings | File Templates.
-    }*/
+    }
 
-    @Override
+    /*@Override
     public Boolean getValue(int port) {
         if(!portInRange(port)){
             throw new IllegalArgumentException();
         }
-        return port==0?Comm.getInstance().readOut(OGROD_STATUS):Comm.getInstance().readAnalogOut(TRYB_CZUJKI)>0;  //To change body of implemented methods use File | Settings | File Templates.
+        return (port==0?Comm.getInstance().readAnalogOut(OGROD_STATUS):Comm.getInstance().readAnalogOut(TRYB_CZUJKI))>0;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
@@ -52,9 +52,9 @@ public class OgrodModule extends Module<Boolean> {
         if(!portInRange(port)){
             throw new IllegalArgumentException();
         }
-        Comm.getInstance().writeANOut(OGROD_COMMAND,Boolean.valueOf(value)?1:0);
+        Comm.getInstance().writeOut(OGROD_COMMAND,Boolean.valueOf(value));
         return true;
-    }
+    }*/
 
     @Override
     public Boolean[] getValues() {

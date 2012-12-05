@@ -17,7 +17,7 @@ public class Config {
 	private static Logger logger = Logger.getLogger(Config.class.getName());
 	public  void setWorkingDir(String dir){
 		workingDir = dir;
-		filePath = dir +  "config/server.properities";
+		filePath = dir +  "config\\server.properties";
 		logger.info("Config: new config dir is: "+filePath);
 		Config.getConf().readConfig();
 	}

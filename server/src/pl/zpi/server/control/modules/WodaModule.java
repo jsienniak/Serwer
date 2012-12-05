@@ -19,7 +19,7 @@ public class WodaModule extends Module<Integer> {
     private static int WODA_ZADANA =9;
     private static int WODA_AKTUALNA =4;
 
-    Integer[] values = new Integer[]{25,25};
+    //Integer[] values = new Integer[]{25,25};
 
 
     /*@Override
@@ -57,7 +57,7 @@ public class WodaModule extends Module<Integer> {
 
     @Override
     public Integer[] getValues() {
-        return values ;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;//values ;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override

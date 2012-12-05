@@ -29,7 +29,7 @@ public class EventManager {
 	 */
 	public static void autoloadEvents(){
 		System.out.println("Starting autoload events");
-		File eventDir = new File(Config.getConf().getWorkingDirectory()+"/"+Config.getConf().getNotNull("EVENTS_PATH"));
+		File eventDir = new File(Config.getConf().getWorkingDirectory()+"\\"+Config.getConf().getNotNull("EVENTS_PATH"));
 		System.out.println("Event dir is: "+eventDir);
 		if(eventDir.exists() && eventDir.isDirectory()){
 			File files[] = eventDir.listFiles();
@@ -78,7 +78,7 @@ public class EventManager {
 	}
 	/**
 	 * Usuwa zdarzenie z rejestru zdarzeń
-	 * @param eventName Obiekt wyrejestrowywanego zdarzenia <br> <b>Uwaga</b> Obiekty nie muszą być referencyjnie równoważne
+	 * @param //eventName Obiekt wyrejestrowywanego zdarzenia <br> <b>Uwaga</b> Obiekty nie muszą być referencyjnie równoważne
 	 */
 	public synchronized void unregisterEvent(Event ev){
 		unregisterEvent(ev.getName());

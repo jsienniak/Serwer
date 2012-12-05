@@ -13,7 +13,7 @@ import pl.zpi.server.db.DBHarmonogramy;
 
 public class HarmonogramSet extends Event { 
 
-	// action=harmonogram.set&dni=1234&g_start=12:00&g_stop=2:00&m_id=2&p=2&w_start=2&w_stop=3&active=0
+	// action=harmonogram.set&dni=1234&g_start=12:00&g_stop=2:00&m_id=2&p=2&w_start=2&w_end=3&active=0
 	@Override
 	public Node processEvent(Document doc, HttpServletRequest request) {
 		try {

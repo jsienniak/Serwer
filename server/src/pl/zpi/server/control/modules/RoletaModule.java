@@ -14,7 +14,8 @@ public class RoletaModule extends Module<Integer> {
 
     Integer value=0;
 
-    private static int ROLETA=0;
+    private static int ROLETA=10;
+    private static int IMPULS=6;
 
     /*@Override
     public Integer getValue(int port) {
@@ -46,7 +47,13 @@ public class RoletaModule extends Module<Integer> {
         if(!portInRange(port)){
             throw new IllegalArgumentException();
         }
-        Comm.getInstance().writeANOut(ROLETA,Integer.parseInt(value));
+        int aktualne = Comm.getInstance().readAnalogOut(ROLETA);
+        int zadane =  Integer.parseInt(value)*2*40/100;
+        Comm.getInstance().writeOut(1,zadane<aktualne);
+        Comm.getInstance().writeANOut(ROLETA,Math.abs(aktualne-zadane));
+        Comm.getInstance().writeANOut(IMPULS,1);
+        Comm.getInstance().writeANOut(IMPULS,0);
+
         return true;
     }
 
