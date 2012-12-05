@@ -31,7 +31,6 @@ public class ProfileUse extends Event {
             (new WodaModule()).setValue(0,prof.get(DBProfiles.value1));
             (new RoletaModule()).setValue(0,prof.get(DBProfiles.value2));
             (new OgrodModule()).setValue(0, prof.get(DBProfiles.value3));
-
 			return createDefaultResponse(doc, "result", "status", "OK", "message", "");
 
 	}
