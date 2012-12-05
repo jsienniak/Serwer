@@ -21,13 +21,15 @@ public class Scheduler {
 	 */
 	private static ScheduledExecutorService ses;
 	private static ScheduledExecutorService ses2;
+
 	public Scheduler() {
 		if (ses == null) {
 			ses2 = Executors.newScheduledThreadPool(250);
 			ses = Executors.newSingleThreadScheduledExecutor();
-			ses.scheduleAtFixedRate(new SchedulerThread(ses2), 0, 24, TimeUnit.HOURS);
+			// ses.scheduleAtFixedRate(new SchedulerThread(ses2), 0, 24,
+			// TimeUnit.HOURS);
 			ses.submit(new SchedulerThread(ses2));
-		//	readDB(); 
+			// readDB();
 		}
 	}
 
@@ -43,31 +45,6 @@ public class Scheduler {
 
 	}
 
-	private synchronized void readDB() {
-		logger.info("SchedulerThread:run()");
-		Calendar c = Calendar.getInstance();
-
-		// int currentHour = c.get(Calendar.);
-		int currentDayOfWeek = c.get(Calendar.DAY_OF_WEEK);
-		String months[] = new String[] { "ND", "PN", "WT", "ŚR", "CZ", "PT", "SB", "ND" };
-		System.out.println(currentDayOfWeek - 1);
-		DBHarmonogramy h = new DBHarmonogramy();
-		Vector v = h.executeQuery(" dni like '%" + String.valueOf(currentDayOfWeek - 1) + "%'");
-		logger.info("Got " + v.size() + " schedules");
-		DatabaseObjImpl o;
-		for (Object dboi : v) {
-			System.out.println("NEXT");
-			o = (DatabaseObjImpl) dboi;
-
-			int port = o.getInt(DBHarmonogramy.port);
-			int val = o.getInt(DBHarmonogramy.w_start);
-			int module = o.getInt(DBHarmonogramy.module);
-
-			System.out.println("Params read");
-			ses.schedule(new WorkerThread(module, port, val), 2, TimeUnit.SECONDS);
-		}
-	}
-
 }
 
 /**
@@ -81,38 +58,67 @@ public class Scheduler {
 class SchedulerThread implements Runnable {
 	Logger logger = Logger.getLogger(SchedulerThread.class.getName());
 	private ScheduledExecutorService ses;
-
+	
 	public SchedulerThread(ScheduledExecutorService ses) {
 		logger.info("SchedulerThread created");
 		this.ses = ses;
+		
 	}
 
 	@Override
 	public void run() {
 		readDB();
 	}
+
+	/**
+	 * Metoda wyciąga z bazy danych wszystkie harmonogramy na aktualny dzien
+	 * tygodnia i umieszcza je w kolejne do wykonania.
+	 */
 	private synchronized void readDB() {
 		logger.info("SchedulerThread:run()");
 		Calendar c = Calendar.getInstance();
 
 		// int currentHour = c.get(Calendar.);
 		int currentDayOfWeek = c.get(Calendar.DAY_OF_WEEK);
-		String months[] = new String[] { "ND", "PN", "WT", "ŚR", "CZ", "PT", "SB", "ND" };
-		System.out.println(currentDayOfWeek - 1);
 		DBHarmonogramy h = new DBHarmonogramy();
 		Vector v = h.executeQuery(" dni like '%" + String.valueOf(currentDayOfWeek - 1) + "%'");
 		logger.info("Got " + v.size() + " schedules");
 		DatabaseObjImpl o;
 		for (Object dboi : v) {
-			System.out.println("NEXT");
+			logger.info("Scheduling event");
 			o = (DatabaseObjImpl) dboi;
+			String s_time = o.getStringNotNull(DBHarmonogramy.g_start);
+			int hour = Integer.parseInt(s_time.substring(0, 2));
+			int hourDiff = hour - c.get(Calendar.HOUR_OF_DAY);
+			if (hourDiff >= 0) {
+				int minute = Integer.parseInt(s_time.substring(3, 5));
+				int minuteDiff = minute - c.get(Calendar.MINUTE);
 
-			int port = o.getInt(DBHarmonogramy.port);
-			int val = o.getInt(DBHarmonogramy.w_start);
-			int module = o.getInt(DBHarmonogramy.module);
+				int delayInSec = hourDiff * 3600 + minuteDiff * 60;
 
-			System.out.println("Params read");
-			ses.schedule(new WorkerThread(module, port, val), 2, TimeUnit.SECONDS);
+				int port = o.getInt(DBHarmonogramy.port);
+				int val = o.getInt(DBHarmonogramy.w_start);
+				int module = o.getInt(DBHarmonogramy.module);
+
+				logger.info("Scheduled IN in "+delayInSec+" sec");
+				ses.schedule(new WorkerThread(module, port, val), delayInSec, TimeUnit.SECONDS);
+
+				String e_time = o.getStringNotNull(DBHarmonogramy.g_stop);
+				hour = Integer.parseInt(e_time.substring(0, 2));
+				hourDiff = hour - c.get(Calendar.HOUR_OF_DAY);
+
+				minute = Integer.parseInt(e_time.substring(3, 5));
+				minuteDiff = minute - c.get(Calendar.MINUTE);
+
+				delayInSec = hourDiff * 3600 + minuteDiff * 60;
+
+				port = o.getInt(DBHarmonogramy.port);
+				val = o.getInt(DBHarmonogramy.w_stop);
+				module = o.getInt(DBHarmonogramy.module);
+
+				logger.info("Scheduled END in "+delayInSec+" sec");
+				ses.schedule(new WorkerThread(module, port, val), delayInSec, TimeUnit.SECONDS);
+			}
 		}
 	}
 }
@@ -147,11 +153,10 @@ class WorkerThread implements Runnable {
 
 	@Override
 	public void run() {
-		logger.info(String.format("Schedule applied:  m = %d p = %d v = %d", module, port, value));
+		logger.info(String.format("Schedule runnnn:  m = %d p = %d v = %d", module, port, value));
 		// FIXME lipa
 		List<Module> modules = ((ModuleGet) EventManager.getInstance().getByName("module.get")).getModules();
-		// boolean result = modules.get(module).setValue(port,
-		// String.valueOf(value));
-		// logger.info("Schedule result: "+result);
+		boolean result = modules.get(module).setValue(port, String.valueOf(value));
+		logger.info("Schedule result: " + result);
 	}
 }

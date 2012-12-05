@@ -1,4 +1,4 @@
-package pl.zpi.server.control;
+package pl.zpi.server._trash;
 
 public class Harmonogram{
 
