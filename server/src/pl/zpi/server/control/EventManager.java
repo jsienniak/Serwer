@@ -26,6 +26,7 @@ public class EventManager {
 	}
 	/**
 	 * Automatycznie ładowanie zdarzeń z pakietu podanego w konfiguracji
+	 * Ładuje tylko te klasy, które implementują interfejs Event
 	 */
 	public static void autoloadEvents(){
 		System.out.println("Starting autoload events");
@@ -86,7 +87,7 @@ public class EventManager {
 	
 	//TODO gdy null wyrzucic no such event Event
 	/**
-	 * Zwraca obiekt zdarzenia o podanej nazwie. Jeżeli zdarzenie nie jest zarejestrowane to zwraca null
+	 * Zwraca obiekt zdarzenia o podanej nazwie. Jeżeli zdarzenie o podanej nazwie nie jest zarejestrowane to zwraca null
 	 * @param eventName nazwa zdarzenia
 	 * @return
 	 */

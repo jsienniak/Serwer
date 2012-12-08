@@ -26,28 +26,35 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.googleapis.extensions.java6.auth.oauth2.GooglePromptReceiver;
+import com.google.api.client.googleapis.services.GoogleClient;
+
 import pl.zpi.server.control.events.*;
 import pl.zpi.server.control.modules.*;
 import pl.zpi.server.utils.Config;
 
 /**
- * Servlet ktory przyjmuje polecenia i zwraca xml
- * 
+ * Servlet pozwalający na komunikacje telefonu z serwerem
+ * Wyniki wywołań akcji przedstawiane są za pomocą XML'a
  * @author mm
  * 
  */
 public class EventsServlet extends HttpServlet {
 
 	private static final long serialVersionUID = -7910478707995128960L;
-	private static List<Module> modules;
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// POST czy GET jedna ryba
 		doPost(req, resp);
 	}
 
-	public Document createDocument() {
+	/**
+	 * Pomocnicza klasa tworząca nowy dokument XML
+	 * @return nowy dokumen XML
+	 */
+	private Document createDocument() {
 		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder = null;
 
@@ -59,7 +66,9 @@ public class EventsServlet extends HttpServlet {
 		return docBuilder == null ? null : docBuilder.newDocument();
 
 	}
-
+	/**
+	 * Inicjalizacja servletu. Tutaj ładowane są wszystkie moduły oraz zdarzenia
+	 */
 	@Override
 	public void init() throws ServletException {
 		Config.getConf().setWorkingDir(getServletContext().getRealPath("/"));
@@ -126,7 +135,9 @@ public class EventsServlet extends HttpServlet {
 		}
 
 	}
-
+	/**
+	 * Obsługa zapytań 
+	 */
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		long start = System.currentTimeMillis();
@@ -158,7 +169,12 @@ public class EventsServlet extends HttpServlet {
 		XML2Writer(response, resp.getWriter());
 	}
 
-	public void XML2Writer(Document doc, PrintWriter out) {
+	/**
+	 * Pomocnicza klasa wysyłająca dokument XML do writera
+	 * @param doc dokument, który chcemy wysłać
+	 * @param out Writer, do którego chcemy pisać
+	 */
+	private void XML2Writer(Document doc, PrintWriter out) {
 		Transformer transformer = null;
 
 		try {
@@ -173,7 +189,6 @@ public class EventsServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 
-		// initialize StreamResult with File object to save to file
 		StreamResult result = new StreamResult(out);
 		DOMSource source = new DOMSource(doc);
 
@@ -186,6 +201,12 @@ public class EventsServlet extends HttpServlet {
 			e.printStackTrace();
 
 		}
+	}
+	public boolean authenticateClient(){
+		//GoogleIdToken git = new Google
+		//GoogleIdTokenVerifier gitv = new GoogleIdTokenVerifier(null, null);
+		//gitv.verify(asdfsfdsdfsdfdsfadfsafdsa);
+		return true;
 	}
 
 }
