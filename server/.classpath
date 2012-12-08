@@ -13,5 +13,9 @@
 	<classpathentry kind="lib" path="lib/gcm-server.jar" sourcepath="lib/gcm-server-src.jar"/>
 	<classpathentry kind="lib" path="lib/RXTXcomm.jar"/>
 	<classpathentry kind="lib" path="lib/modbus.jar"/>
+	<classpathentry kind="lib" path="lib/google-api-client-java6-1.12.0-beta.jar"/>
+	<classpathentry kind="lib" path="lib/google-oauth-client-java6-1.12.0-beta.jar"/>
+	<classpathentry kind="lib" path="lib/google-api-client-1.12.0-beta.jar" sourcepath="lib_src/google-api-client-1.12.0-beta-sources.jar"/>
+	<classpathentry kind="lib" path="lib/json-simple-1.1.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

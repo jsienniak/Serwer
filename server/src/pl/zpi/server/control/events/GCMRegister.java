@@ -34,8 +34,7 @@ public class GCMRegister extends Event {
 		}
 		Sender sender = new Sender(Config.getConf().get("GCM_DEV_KEY"));
 		Message message = new Message.Builder().build();
-
-		Result result = null;
+		Result result = null;		
 		try {
 			result = sender.send(message, device, 5);
 		} catch (IOException e) {
