@@ -3,7 +3,7 @@
 	<property name="src" value="src" />
 	
 	<!-- Sciezka do katalogu aplikacji -->
-	<property name="app_root" value="/home/mm/tomcat7/webapps/zpi_server" />
+	<property name="app_root" value="c:/tomcat/webapps/zpi_server" />
 	
 	<target name="auto-build" depends="create, compile">
 		<echo>--- AUTO-BUILD ---</echo>

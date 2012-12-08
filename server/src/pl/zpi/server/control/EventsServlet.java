@@ -34,6 +34,7 @@ import pl.zpi.server.control.events.ModuleGet;
 import pl.zpi.server.control.events.ModuleSet;
 import pl.zpi.server.control.events.Ping;
 import pl.zpi.server.control.events.PrintDBUsers;
+import pl.zpi.server.control.modules.*;
 import pl.zpi.server.utils.Config;
 
 /**
@@ -72,21 +73,21 @@ public class EventsServlet extends HttpServlet {
 		EventManager evm = EventManager.getInstance();
 		EventManager.autoloadEvents();
 		// moduly
-		ModuleGet mg = new ModuleGet();
-		ModuleSet ms = new ModuleSet();
-		Module m = new DummyModule();
+		ModuleGet mg = (ModuleGet) evm.getByName("module.get");
+		ModuleSet ms = (ModuleSet) evm.getByName("module.set");
+		Module m = new WodaModule();
 		mg.put(m);
 		ms.put(m);
-		m = new DummyModule();
+		m = new RoletaModule();
 		mg.put(m);
 		ms.put(m);
-		m = new DummyModule();
+		m = new BramaModule();
 		mg.put(m);
 		ms.put(m);
-		m = new DummyModule();
+		m = new AlarmModule();
 		mg.put(m);
 		ms.put(m);
-		m = new DummyModule();
+		m = new OgrodModule();
 		mg.put(m); 
 		ms.put(m);
 		evm.registerEvent(mg);
@@ -102,7 +103,10 @@ public class EventsServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		long start = System.currentTimeMillis();
-		Document response = createDocument();
+	    //PRO TOKEN (R) GET
+		//	System.out.println(req.getHeader("TOKEN"));
+
+        Document response = createDocument();
 		Element root = response.createElement("response");
 		response.appendChild(root);
 
@@ -127,7 +131,11 @@ public class EventsServlet extends HttpServlet {
 
 		}
 		root.appendChild(createTextNode(response, "Total_time", String.valueOf(System.currentTimeMillis() - start) + " ms"));
-		XML2Writer(response, resp.getWriter());
+        System.out.println("REQ: "+req.getQueryString());
+
+        XML2Writer(response, System.console().writer());
+        System.out.println();
+        XML2Writer(response, resp.getWriter());
 	}
 
 	public void XML2Writer(Document doc, PrintWriter out) {

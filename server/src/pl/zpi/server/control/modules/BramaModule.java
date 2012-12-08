@@ -15,7 +15,7 @@ public class BramaModule extends Module<Boolean> {
 
     Boolean value = false;
 
-    private static int BRAMA_STATUS = 3;
+    private static int BRAMA_STATUS = 4;
     private static int BRAMA_COMMAND = 4;
 
 

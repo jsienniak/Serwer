@@ -14,9 +14,9 @@ public class AlarmModule extends Module<Integer> {
 
     private static int PIN = 1234;
     Integer[] values = new Integer[]{0,0};
-    private static int ALARM_UZBROJENIE_CZYT = 0;
-    private static int ALARM_IN = 0;
-    private static int ALARM_UZBROJ = 1;
+    private static int ALARM_UZBROJENIE_CZYT = 6;
+    private static int ALARM_IN = 1;
+    private static int ALARM_UZBROJ =1;
 
 
 

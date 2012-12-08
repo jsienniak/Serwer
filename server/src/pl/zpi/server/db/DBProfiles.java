@@ -1,5 +1,6 @@
 package pl.zpi.server.db;
 
+import java.util.Vector;
 import java.util.logging.Logger;
 
 
@@ -32,5 +33,10 @@ public class DBProfiles extends DatabaseObjImpl {
 	protected synchronized void getColumnNames(){
 		super.getColumnNames();
 	}
+
+    @Override
+    public Vector executeQuery(String query){
+        return super.executeQuery(query);
+    }
 }
 
