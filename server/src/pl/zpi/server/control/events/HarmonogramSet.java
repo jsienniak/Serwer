@@ -27,7 +27,7 @@ public class HarmonogramSet extends Event {
 			har.set("w_start",request.getParameter("w_start"));
 			har.set("w_end",request.getParameter("w_end"));
 			har.set("active",request.getParameter("active"));
-			
+			har.set("name", request.getParameter("name"));
 			Scheduler.getInstance().checkSchedule(har);
 			har.write();
 			return createDefaultResponse(doc, "result", "status", "OK", "message", String.valueOf(har.getId()));
