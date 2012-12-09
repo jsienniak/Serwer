@@ -16,6 +16,6 @@ public abstract class Event {
 	public abstract String getName();
 	public String getLoggedUserId(HttpServletRequest request){
 		HttpSession session = request.getSession();
-		return "1";//String.valueOf( session.getAttribute("user_id"));
+		return String.valueOf( session.getAttribute("user_id"));
 	}
 }

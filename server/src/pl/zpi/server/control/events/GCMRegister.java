@@ -34,16 +34,23 @@ public class GCMRegister extends Event {
 		}
 		Sender sender = new Sender(Config.getConf().get("GCM_DEV_KEY"));
 		Message message = new Message.Builder().addData("event", "ALARM").build();
-		Result result = null;		
-		try {
+		Result result = null;
+        DBDevices dev = new DBDevices();
+        dev.set("Reg_id", device);
+        dev.set("UID", device);
+        dev.set("user_id", getLoggedUserId(request));
+        dev.write();
+        return createTextNode(doc, "result", "OK");
+		/*try {
 			result = sender.send(message, device, 5);
 		} catch (IOException e) {
 			e.printStackTrace();
+            return createDefaultResponse(doc, "result", "status", "ERR", "message", "IOException");
 		}
 		if (result.getMessageId() != null) {
 			String canonicalRegId = result.getCanonicalRegistrationId();
 			if (canonicalRegId != null) {
-				DBDevices dev = new DBDevices();
+				/*DBDevices dev = new DBDevices();
 				dev.set("Reg_id", canonicalRegId);
 				dev.set("UID", device);
 				dev.set("user_id", getLoggedUserId(request));
@@ -52,11 +59,14 @@ public class GCMRegister extends Event {
 			}
 		} else {
 			String error = result.getErrorCodeName();
+
 			if (error.equals(Constants.ERROR_NOT_REGISTERED)) {
 				return createDefaultResponse(doc, "result", "status", "ERR", "message", "Device not registered in service");
-			}
+			} else {
+                return createDefaultResponse(doc, "result", "status", "ERR", "message", error);
+            }
 		}
-		return createDefaultResponse(doc, "result", "status", "ERR", "message", "Device not registered in service2");
+		return createDefaultResponse(doc, "result", "status", "ERR", "message", "Device not registered in service2"); */
 	}
 
 	@Override
