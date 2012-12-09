@@ -17,6 +17,10 @@ public class DBUsers extends DatabaseObjImpl {
 		}
 	}
 
+	public void config(){
+		this.primaryKey = "id_users";
+		this.tableName = "users";
+	}
 	public DBUsers() {
 		super();
 		this.primaryKey = "id_users";
@@ -28,6 +32,10 @@ public class DBUsers extends DatabaseObjImpl {
 		this();
 		this.data = data;
 	}
-
+	
+	@Override
+	protected synchronized void getColumnNames(){
+		super.getColumnNames();
+	}
 
 }

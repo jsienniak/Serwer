@@ -10,6 +10,7 @@ public class DBProfiles extends DatabaseObjImpl {
 	public static final String value1 = "v1";
 	public static final String value2 = "v2";
 	public static final String value3 = "v3";
+	public static final String userId = "user_id";
 
 	//FIXME columnNames static -> init
 	private static Logger logger = Logger.getLogger(DBProfiles.class.getName());

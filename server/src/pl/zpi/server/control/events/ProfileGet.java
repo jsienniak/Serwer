@@ -18,7 +18,7 @@ public class ProfileGet extends Event {
 		try { 
 			DBProfiles har = new DBProfiles();
 			Node root = createDefaultResponse(doc, "result", "Status", "OK", "message", "");
-			root.appendChild(XMLToolkit.packVector(doc, har.executeQuery(), "list"));
+			root.appendChild(XMLToolkit.packVector(doc, har.executeQuery(" user_id ="+getLoggedUserId(request)), "list"));
 			return root;
 		//	return createDefaultResponse(doc, "result", "status", "OK", "message", String.valueOf(har.getId()));
 		} catch (NumberFormatException ex) {

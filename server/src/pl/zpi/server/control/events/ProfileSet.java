@@ -22,6 +22,7 @@ public class ProfileSet extends Event {
 		prof.set(DBProfiles.value1, v1);
 		prof.set(DBProfiles.value2, v2);
 		prof.set(DBProfiles.value3, v3);
+		prof.set(DBProfiles.userId, getLoggedUserId(request));
 		if(prof.write()){
 			return XMLToolkit.createDefaultResponse(doc, "result", "status", "OK", "message", "");
 		}
