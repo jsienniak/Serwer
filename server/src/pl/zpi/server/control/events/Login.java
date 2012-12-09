@@ -2,6 +2,8 @@ package pl.zpi.server.control.events;
 
 import static pl.zpi.server.utils.XMLToolkit.createDefaultResponse;
 
+import java.util.Vector;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -10,11 +12,28 @@ import org.w3c.dom.Node;
 
 import pl.zpi.server.control.Event;
 import pl.zpi.server.db.DBUsers;
+import pl.zpi.server.db.DatabaseObjImpl;
+import pl.zpi.server.utils.XMLToolkit;
 
 public class Login extends Event{
 	@Override
 	public Node processEvent(Document doc, HttpServletRequest request) {
-		String token = "{ \"token\":\""+request.getParameter("token")+"}";
+		String mode = request.getParameter("mode");
+		if(mode != null && "web".equals(mode)){
+			String login = request.getParameter("login");
+			String pass = request.getParameter("haslo");
+			DBUsers u = new DBUsers();
+			Vector v = u.executeQuery("email ='"+login+"' AND password='"+pass+"'");
+			if(v.size() > 0){
+				HttpSession session = request.getSession(true);
+			
+				session.setAttribute("user", v.firstElement());
+				session.setAttribute("user_id", ((DatabaseObjImpl)v.firstElement()).getId());
+				
+			}
+			return XMLToolkit.createTextNode(doc, "status", "should redirect");
+		}else{
+		String token = "{ \"token\":\""+request.getParameter("token")+"}"; 
 		System.out.println("Token is: "+token);
 		//DBUsers users = new DBUsers(Integer.valueOf(request.getParameter("id")));
 		
@@ -46,7 +65,7 @@ public class Login extends Event{
 	//	}else{
 	//		return createDefaultResponse(doc, "user", "status" , "ERR" , "message", "Database connection error");
 	//	}
-
+		}
 	}
 
 	@Override

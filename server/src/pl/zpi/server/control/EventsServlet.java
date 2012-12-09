@@ -33,10 +33,12 @@ import com.google.api.client.googleapis.extensions.java6.auth.oauth2.GooglePromp
 import com.google.api.client.googleapis.services.GoogleClient;
 import com.google.api.client.http.HttpRequest;
 
+import pl.zpi.server._trash.DummyModule;
 import pl.zpi.server.control.events.*;
 import pl.zpi.server.control.modules.*;
 import pl.zpi.server.db.DBHarmonogramy;
 import pl.zpi.server.db.DBUsers;
+import pl.zpi.server.db.DatabaseObjImpl;
 import pl.zpi.server.utils.Config;
 import pl.zpi.server.utils.XMLToolkit;
 
@@ -85,6 +87,7 @@ public class EventsServlet extends HttpServlet {
 		// moduly
 		ModuleGet mg = new ModuleGet();
 		ModuleSet ms = new ModuleSet();
+		//Proszę nie zmieniać tej kolejności. Ważne!!!
 		Module m = new WodaModule(); // 0
 		mg.put(m);
 		ms.put(m);
@@ -101,6 +104,9 @@ public class EventsServlet extends HttpServlet {
 		mg.put(m);
 		ms.put(m);
 		m = new ModbusModule(); // 5
+		mg.put(m);
+		ms.put(m);
+		m = new DummyModule();
 		mg.put(m);
 		ms.put(m);
 
@@ -162,8 +168,8 @@ public class EventsServlet extends HttpServlet {
 			root.appendChild(createTextNode(response, "message", "No action parameter defined"));
 
 		} else {
-			
-			//not logged
+
+			// not logged
 			if (!"user.login".equals(action) && getLoggedUser(req) < 0) {
 				root.appendChild(XMLToolkit.createDefaultResponse(response, "result", "status", "NOT_LOGGED", "message", "User not logged"));
 			} else {
@@ -175,7 +181,33 @@ public class EventsServlet extends HttpServlet {
 					root.appendChild(createTextNode(response, "message", "No such event (" + action + ")"));
 
 				} else {
-					root.appendChild(e.processEvent(response, req));
+					// sprawdzamy dostep
+					boolean denied = false;
+					if (action.contains("module")) {
+						HttpSession session = req.getSession();
+						if (action.contains("get")) {
+							denied = isDenied(session.getAttribute("user"), req.getParameter("id"), false);
+							if (denied) {
+								root.appendChild(XMLToolkit.createDefaultResponse(response, "result", "status", "FORBIDDEN", "message", "Brak uprawnień do czytania modułu "));
+							}
+						} else {//SET
+							denied = isDenied(session.getAttribute("user"), req.getParameter("id"), true);
+							if (denied) {
+								root.appendChild(XMLToolkit.createDefaultResponse(response, "result", "status", "FORBIDDEN", "message", "Brak uprawnień do ustawienia modułu "));
+							}
+						}
+					}
+					if (!denied) {
+						root.appendChild(e.processEvent(response, req));
+						if (req.getParameter("mode") != null && "web".equals(req.getParameter("mode"))) {
+							HttpSession session = req.getSession();
+							if (session != null && session.getAttribute("user") != null) {
+								resp.sendRedirect("/access.html");
+							} else {
+								resp.sendRedirect("/login.html");
+							}
+						}
+					}
 				}
 			}
 		}
@@ -183,12 +215,17 @@ public class EventsServlet extends HttpServlet {
 		XML2Writer(response, resp.getWriter());
 	}
 
+	private boolean isDenied(Object attribute, String parameter, boolean write) {
+		return isDenied((DatabaseObjImpl) attribute, Integer.valueOf(parameter), write);
+
+	}
+
 	public int getLoggedUser(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		if (session == null) {
 			return -1;
 		}
-		DBUsers userId = (DBUsers) session.getAttribute("user");
+		DatabaseObjImpl userId = (DatabaseObjImpl) session.getAttribute("user");
 		if (userId == null) {
 			return -1;
 		}
@@ -245,4 +282,10 @@ public class EventsServlet extends HttpServlet {
 		return true;
 	}
 
+	public boolean isDenied(DatabaseObjImpl user, int moduleCode, boolean write) {
+		user.read();
+		String access = user.getStringNotNull(DBUsers.ACCESS_RIGHTS);
+		int permNumber = write ? moduleCode * 2 : moduleCode  * 2 + 1;
+		return access.contains("*" + permNumber + "*");
+	}
 }

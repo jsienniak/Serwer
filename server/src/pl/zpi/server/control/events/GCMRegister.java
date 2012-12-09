@@ -46,6 +46,7 @@ public class GCMRegister extends Event {
 				DBDevices dev = new DBDevices();
 				dev.set("Reg_id", canonicalRegId);
 				dev.set("UID", device);
+				dev.set("user_id", getLoggedUserId(request));
 				dev.write();
 				return createTextNode(doc, "result", "OK");
 			}

@@ -17,7 +17,6 @@ public class OgrodModule extends Module<Boolean> {
     private static int OGROD_COMMAND =2;
     private static int OGROD_STATUS =0;
     private static int TRYB_CZUJKI =0;
-
     /* zapis port0 command port1 tryb czujki
     *odczyt port0 status port1 tryb czujki
      */

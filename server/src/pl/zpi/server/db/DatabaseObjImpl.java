@@ -322,7 +322,7 @@ public class  DatabaseObjImpl implements DatabaseObj {
 		data.put(columnName.toLowerCase(), value);
 	}
 	public static String singleQuote(String s){
-		if (!s.startsWith("'")){
+		if (s!= null  && !s.startsWith("'")){
 			return String.format("'%s'", s);
 		}
 		return s;

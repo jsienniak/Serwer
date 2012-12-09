@@ -9,6 +9,7 @@ public class DBUsers extends DatabaseObjImpl {
 	public static boolean debug = true;
 	protected static String[] columnNames = null;
 	private static final Logger logger = Logger.getLogger(DBUsers.class.getName());
+	public static final String ACCESS_RIGHTS = "access_rights";
 	
 	public DBUsers(int ID) {
 		this();
