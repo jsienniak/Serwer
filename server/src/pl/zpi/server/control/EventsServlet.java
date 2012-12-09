@@ -167,7 +167,9 @@ public class EventsServlet extends HttpServlet {
 		}
 		root.appendChild(createTextNode(response, "Total_time", String.valueOf(System.currentTimeMillis() - start) + " ms"));
 		XML2Writer(response, resp.getWriter());
-	}
+        XML2Writer(response, new PrintWriter(System.out));
+
+    }
 
 	/**
 	 * Pomocnicza klasa wysyłająca dokument XML do writera

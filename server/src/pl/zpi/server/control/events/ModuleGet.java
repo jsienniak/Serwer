@@ -3,12 +3,14 @@ package pl.zpi.server.control.events;
 import static pl.zpi.server.utils.XMLToolkit.createDefaultResponse;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.wimpi.modbus.ModbusIOException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -46,6 +48,9 @@ public class ModuleGet extends Event {
 				String result = modules.get(moduleID).getValue(portNum).toString();
 				return createDefaultResponse(doc, "module", "status", "OK", "message", "Value get","value",result);
 			}
+            /*catch (ModbusIOException e){
+                return createDefaultResponse(doc, "module", "status", "ERR", "message", "MODBUSIOException");
+            }     */
 			catch(ArrayIndexOutOfBoundsException ex){
 				return createDefaultResponse(doc, "module", "status", "ERR", "message", "No such port number ("+ex.getMessage()+")");
 			}
