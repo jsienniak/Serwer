@@ -52,16 +52,12 @@ public class XMLCravler {
 			DatabaseObj st = (DatabaseObj) s.newInstance();
 			p.appendChild(XMLToolkit.packVector(d, st.executeQuery(), "users"));
 		} catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (DOMException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (InstantiationException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (IllegalAccessException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		

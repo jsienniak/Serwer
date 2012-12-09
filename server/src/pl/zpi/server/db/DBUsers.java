@@ -9,6 +9,7 @@ public class DBUsers extends DatabaseObjImpl {
 	public static boolean debug = true;
 	protected static String[] columnNames = null;
 	private static final Logger logger = Logger.getLogger(DBUsers.class.getName());
+	public static final String ACCESS_RIGHTS = "access_rights";
 	
 	public DBUsers(int ID) {
 		this();
@@ -17,6 +18,10 @@ public class DBUsers extends DatabaseObjImpl {
 		}
 	}
 
+	public void config(){
+		this.primaryKey = "id_users";
+		this.tableName = "users";
+	}
 	public DBUsers() {
 		super();
 		this.primaryKey = "id_users";
@@ -28,6 +33,10 @@ public class DBUsers extends DatabaseObjImpl {
 		this();
 		this.data = data;
 	}
-
+	
+	@Override
+	protected synchronized void getColumnNames(){
+		super.getColumnNames();
+	}
 
 }

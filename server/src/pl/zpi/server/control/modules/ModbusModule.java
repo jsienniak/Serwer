@@ -57,4 +57,5 @@ public class ModbusModule extends Module<String> {
     public String getModuleInfo() {
         return "testowanie modbusa";  //To change body of implemented methods use File | Settings | File Templates.
     }
+
 }

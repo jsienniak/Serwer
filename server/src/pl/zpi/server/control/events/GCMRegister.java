@@ -33,7 +33,7 @@ public class GCMRegister extends Event {
 			return createDefaultResponse(doc, "result", "status", "err", "message", "Missing parameter");
 		}
 		Sender sender = new Sender(Config.getConf().get("GCM_DEV_KEY"));
-		Message message = new Message.Builder().build();
+		Message message = new Message.Builder().addData("event", "ALARM").build();
 		Result result = null;		
 		try {
 			result = sender.send(message, device, 5);
@@ -46,6 +46,7 @@ public class GCMRegister extends Event {
 				DBDevices dev = new DBDevices();
 				dev.set("Reg_id", canonicalRegId);
 				dev.set("UID", device);
+				dev.set("user_id", getLoggedUserId(request));
 				dev.write();
 				return createTextNode(doc, "result", "OK");
 			}

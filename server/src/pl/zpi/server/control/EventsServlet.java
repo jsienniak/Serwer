@@ -26,35 +26,35 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import pl.zpi.server._trash.DummyModule;
-import pl.zpi.server.control.events.AddDBUsers;
-import pl.zpi.server.control.events.DeleteDBUsers;
-import pl.zpi.server.control.events.ModifyDBUsers;
-import pl.zpi.server.control.events.ModuleGet;
-import pl.zpi.server.control.events.ModuleSet;
-import pl.zpi.server.control.events.Ping;
-import pl.zpi.server.control.events.PrintDBUsers;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.googleapis.extensions.java6.auth.oauth2.GooglePromptReceiver;
+import com.google.api.client.googleapis.services.GoogleClient;
+
+import pl.zpi.server.control.events.*;
 import pl.zpi.server.control.modules.*;
 import pl.zpi.server.utils.Config;
 
 /**
- * Servlet ktory przyjmuje polecenia i zwraca xml
- * 
+ * Servlet pozwalający na komunikacje telefonu z serwerem
+ * Wyniki wywołań akcji przedstawiane są za pomocą XML'a
  * @author mm
  * 
  */
 public class EventsServlet extends HttpServlet {
 
 	private static final long serialVersionUID = -7910478707995128960L;
-	private static List<Module> modules;
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// POST czy GET jedna ryba
 		doPost(req, resp);
 	}
 
-	public Document createDocument() {
+	/**
+	 * Pomocnicza klasa tworząca nowy dokument XML
+	 * @return nowy dokumen XML
+	 */
+	private Document createDocument() {
 		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder = null;
 
@@ -66,32 +66,68 @@ public class EventsServlet extends HttpServlet {
 		return docBuilder == null ? null : docBuilder.newDocument();
 
 	}
-
+	/**
+	 * Inicjalizacja servletu. Tutaj ładowane są wszystkie moduły oraz zdarzenia
+	 */
 	@Override
 	public void init() throws ServletException {
-		Config.getConf().setWorkingDir(getServletContext().getRealPath("\\"));
+		Config.getConf().setWorkingDir(getServletContext().getRealPath("/"));
 		EventManager evm = EventManager.getInstance();
 		EventManager.autoloadEvents();
 		// moduly
-		ModuleGet mg = (ModuleGet) evm.getByName("module.get");
-		ModuleSet ms = (ModuleSet) evm.getByName("module.set");
-		Module m = new WodaModule();
+		ModuleGet mg = new ModuleGet();
+		ModuleSet ms = new ModuleSet();
+		Module m = new WodaModule();   //0
 		mg.put(m);
 		ms.put(m);
-		m = new RoletaModule();
+		m = new RoletaModule();    //1
 		mg.put(m);
 		ms.put(m);
-		m = new BramaModule();
+		m = new BramaModule();   //2
 		mg.put(m);
 		ms.put(m);
-		m = new AlarmModule();
+		m = new AlarmModule();   //3
 		mg.put(m);
 		ms.put(m);
-		m = new OgrodModule();
-		mg.put(m); 
-		ms.put(m);
-		evm.registerEvent(mg);
+        m = new OgrodModule();   //4
+        mg.put(m);
+        ms.put(m);
+        m = new ModbusModule();   //5
+        mg.put(m);
+        ms.put(m);
+
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                AlarmModule alarm = new AlarmModule();
+                System.out.println("Załadowano.");
+                boolean al = false;
+                while(true){
+                    if(alarm.getValue(2)>0){
+                        if(!al){
+                            al=true;
+                            System.out.println("ALARM!!");
+                            //Tutaj obsluga alarmu!!;
+                        }
+                    } else {
+                        al = false;
+                    }
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                    }
+                }
+
+            }
+        });
+
+        t.start();
+
+
+        evm.registerEvent(mg);
 		evm.registerEvent(ms);
+   
 		try {
 			Class.forName("com.mysql.jdbc.Driver").getClass();
 		} catch (ClassNotFoundException e) {
@@ -99,14 +135,13 @@ public class EventsServlet extends HttpServlet {
 		}
 
 	}
-
+	/**
+	 * Obsługa zapytań 
+	 */
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		long start = System.currentTimeMillis();
-	    //PRO TOKEN (R) GET
-		//	System.out.println(req.getHeader("TOKEN"));
-
-        Document response = createDocument();
+		Document response = createDocument();
 		Element root = response.createElement("response");
 		response.appendChild(root);
 
@@ -131,14 +166,15 @@ public class EventsServlet extends HttpServlet {
 
 		}
 		root.appendChild(createTextNode(response, "Total_time", String.valueOf(System.currentTimeMillis() - start) + " ms"));
-        System.out.println("REQ: "+req.getQueryString());
-
-        XML2Writer(response, System.console().writer());
-        System.out.println();
-        XML2Writer(response, resp.getWriter());
+		XML2Writer(response, resp.getWriter());
 	}
 
-	public void XML2Writer(Document doc, PrintWriter out) {
+	/**
+	 * Pomocnicza klasa wysyłająca dokument XML do writera
+	 * @param doc dokument, który chcemy wysłać
+	 * @param out Writer, do którego chcemy pisać
+	 */
+	private void XML2Writer(Document doc, PrintWriter out) {
 		Transformer transformer = null;
 
 		try {
@@ -153,7 +189,6 @@ public class EventsServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 
-		// initialize StreamResult with File object to save to file
 		StreamResult result = new StreamResult(out);
 		DOMSource source = new DOMSource(doc);
 
@@ -166,6 +201,12 @@ public class EventsServlet extends HttpServlet {
 			e.printStackTrace();
 
 		}
+	}
+	public boolean authenticateClient(){
+		//GoogleIdToken git = new Google
+		//GoogleIdTokenVerifier gitv = new GoogleIdTokenVerifier(null, null);
+		//gitv.verify(asdfsfdsdfsdfdsfadfsafdsa);
+		return true;
 	}
 
 }

@@ -44,7 +44,7 @@ public class OgrodModule extends Module<Boolean> {
         if(!portInRange(port)){
             throw new IllegalArgumentException();
         }
-        return (port==0?Comm.getInstance().readAnalogOut(OGROD_STATUS):Comm.getInstance().readAnalogOut(TRYB_CZUJKI))>0;  //To change body of implemented methods use File | Settings | File Templates.
+        return port==0?Comm.getInstance().readOut(OGROD_STATUS):Comm.getInstance().readAnalogOut(TRYB_CZUJKI)>0;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
@@ -52,11 +52,7 @@ public class OgrodModule extends Module<Boolean> {
         if(!portInRange(port)){
             throw new IllegalArgumentException();
         }
-        if(port==0){
-            Comm.getInstance().writeANOut(OGROD_COMMAND,Boolean.valueOf(value)?1:0);
-        } else {
-            Comm.getInstance().writeANOut(TRYB_CZUJKI,Boolean.valueOf(value)?1:0);
-        }
+        Comm.getInstance().writeANOut(OGROD_COMMAND,Boolean.valueOf(value)?1:0);
         return true;
     }
 

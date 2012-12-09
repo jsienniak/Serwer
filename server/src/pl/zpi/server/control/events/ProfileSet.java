@@ -14,9 +14,9 @@ public class ProfileSet extends Event {
 	@Override
 	public Node processEvent(Document doc, HttpServletRequest request) {
 		String name = request.getParameter("name");
-		String v1 = request.getParameter("m1_v");  //woda
-		String v2 = request.getParameter("m2_v");  //roleta
-		String v3 = request.getParameter("m3_v");  //ogrod
+		String v1 = request.getParameter("m1_v");
+		String v2 = request.getParameter("m2_v");
+		String v3 = request.getParameter("m3_v");
 		DBProfiles prof = new DBProfiles();
 		prof.set(DBProfiles.name, name);
 		prof.set(DBProfiles.value1, v1);

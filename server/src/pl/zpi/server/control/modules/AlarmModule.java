@@ -1,6 +1,8 @@
 package pl.zpi.server.control.modules;
 
 import pl.zpi.server.control.Module;
+import pl.zpi.server.db.DBUsers;
+import pl.zpi.server.db.DatabaseObjImpl;
 import pl.zpi.server.modbus.Comm;
 
 /**
@@ -17,7 +19,6 @@ public class AlarmModule extends Module<Integer> {
     private static int ALARM_UZBROJENIE_CZYT = 6;
     private static int ALARM_IN = 1;
     private static int ALARM_UZBROJ =1;
-
 
 
     @Override
@@ -55,7 +56,7 @@ public class AlarmModule extends Module<Integer> {
                 PIN= Integer.parseInt(value);
                 return true;
         }
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return false;  
     }
 
     /*@Override
