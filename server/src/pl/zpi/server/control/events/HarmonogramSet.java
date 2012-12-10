@@ -27,7 +27,7 @@ public class HarmonogramSet extends Event {
 			har.set("w_start",request.getParameter("w_start"));
 			har.set("w_end",request.getParameter("w_end"));
 			har.set("active",request.getParameter("active"));
-			har.set("user_id", getLoggedUserId(request)); 
+			har.set("user_id", ((getLoggedUserId(request)==null)?""+1:getLoggedUserId(request)));
 			
 			Scheduler.getInstance().checkSchedule(har);
 			har.write();

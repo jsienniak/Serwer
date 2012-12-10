@@ -38,9 +38,11 @@ public class Ping extends Event{
         Message message = new Message.Builder().addData("event", "ALARM").build();
         String id = "APA91bFw1nQZxq3DYGG1Vhwmz0ryR8UUUoR7GwttSEa9AHE_HzhARZWdgxwT9xxBM3TCusm0vpEKic0KcAb7urTYMfIpkmZ5Sx6M7L-nIuZQTDrzaRJkmhPZurXMT-aPAXfvwDdG6kiB";
         try {
+            if(!ID.isEmpty()){
+                MulticastResult r = sender.send(message,ID,3000);
+                System.out.println(r.toString());
+            }
 
-            MulticastResult r = sender.send(message,ID,3);
-            System.out.println(r.toString());
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }

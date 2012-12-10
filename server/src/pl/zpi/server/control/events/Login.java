@@ -46,7 +46,7 @@ public class Login extends Event{
 		System.out.println("Token is: "+token);
 		//DBUsers users = new DBUsers(Integer.valueOf(request.getParameter("id")));
 		
-		HttpTransport transport = new NetHttpTransport();
+		/*HttpTransport transport = new NetHttpTransport();
 		JsonFactory jsonFactory = new JacksonFactory();
 		
 		//sprawdzamy poprawność tokenu
@@ -64,7 +64,7 @@ public class Login extends Event{
             //niepoprawny
 	if(result == null){
 		return createDefaultResponse(doc, "result", "status", "FORBIDEN","message", "Verification failed");
-    }
+    }  */
 		HttpSession session = request.getSession(true);	
 		DBUsers user = new DBUsers(Integer.valueOf(request.getParameter("id")));
 		

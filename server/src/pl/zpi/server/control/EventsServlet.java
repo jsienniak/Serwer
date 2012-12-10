@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -23,6 +24,9 @@ import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import com.google.android.gcm.server.Message;
+import com.google.android.gcm.server.MulticastResult;
+import com.google.android.gcm.server.Sender;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -33,6 +37,8 @@ import com.google.api.client.googleapis.services.GoogleClient;
 
 import pl.zpi.server.control.events.*;
 import pl.zpi.server.control.modules.*;
+import pl.zpi.server.db.DBDevices;
+import pl.zpi.server.db.DatabaseObj;
 import pl.zpi.server.utils.Config;
 
 /**
@@ -107,7 +113,26 @@ public class EventsServlet extends HttpServlet {
                         if(!al){
                             al=true;
                             System.out.println("ALARM!!");
-                            //Tutaj obsluga alarmu!!;
+                            DBDevices dev = new DBDevices();
+                            Vector<DatabaseObj> devices = dev.executeQuery();
+                            List<String> ID  = new ArrayList<String>();
+                            for(DatabaseObj ob: devices){
+                                ob.read();
+                                ID.add(ob.get("reg_id"));
+                                System.out.println(ob.get("reg_id"));
+                            }
+                            Sender sender = new Sender(Config.getConf().get("GCM_DEV_KEY"));
+                            Message message = new Message.Builder().addData("event", "ALARM").build();
+                            String id = "APA91bFw1nQZxq3DYGG1Vhwmz0ryR8UUUoR7GwttSEa9AHE_HzhARZWdgxwT9xxBM3TCusm0vpEKic0KcAb7urTYMfIpkmZ5Sx6M7L-nIuZQTDrzaRJkmhPZurXMT-aPAXfvwDdG6kiB";
+                            try {
+                                if(!ID.isEmpty()){
+                                    MulticastResult r = sender.send(message,ID,3000);
+                                    System.out.println(r.toString());
+                                }
+
+                            } catch (IOException e) {
+                                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                            }
                         }
                     } else {
                         al = false;

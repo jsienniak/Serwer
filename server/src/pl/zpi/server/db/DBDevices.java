@@ -27,6 +27,11 @@ public class DBDevices extends DatabaseObjImpl{
 		this.data = data;
 	}
 
+    public void config(){
+        this.primaryKey = "id_device";
+        this.tableName = "devices";
+    }
+
 	public DBDevices(String table, String primaryKey) {
 		data = new HashMap<String, String>();
 		this.primaryKey = primaryKey;
