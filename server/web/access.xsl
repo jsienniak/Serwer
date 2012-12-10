@@ -22,7 +22,7 @@
 	<style>
 		body td{text-align:center;}
 	</style>
-	<form action="/do" name="delete_form">
+	<form action="/zpi_server/do" name="delete_form">
 	<input type="hidden" name="action" value="user.delete" />
 	<input type="hidden" name="id" id="id_delete" value="" />
 	</form>
@@ -31,7 +31,7 @@
 			<div class="hero-unit">
 				<h2>Zarządzanie</h2>
 				<h4>Prawa dostępu</h4>
-				<form class="form-horizontal" id="input_form" action="/do">
+				<form class="form-horizontal" id="input_form" action="/zpi_server/do">
 				<input type="hidden" name="action" value="user.edit" />
 				<table class="table table-hover table-condensed">
 					<thead>

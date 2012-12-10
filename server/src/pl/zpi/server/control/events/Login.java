@@ -65,15 +65,32 @@ public class Login extends Event{
 	if(result == null){
 		return createDefaultResponse(doc, "result", "status", "FORBIDEN","message", "Verification failed");
     }  */
-		HttpSession session = request.getSession(true);	
-		DBUsers user = new DBUsers(Integer.valueOf(request.getParameter("id")));
+		HttpSession session = request.getSession(true);
+        DBUsers user = new DBUsers();
+            DatabaseObjImpl u2;
+        String sEmail = request.getParameter("id");
+        System.out.println("###### email is: "+sEmail);
+        Vector v = user.executeQuery(" email like '"+sEmail+"'");
+        if(v.size() == 0){
+            user = new DBUsers();
+            user.set("email",sEmail);
+            user.set("login", "guest");
+            user.set("password","xxxxx");
+            user.write();
+        }else{
+            u2 = (DatabaseObjImpl)v.firstElement();
+            user = new DBUsers(u2.getInt("id_users"));
+            user.read();
+            System.out.println("###### User id is: "+user.getInt("id_users"));
+        }
+		//DBUsers user = new DBUsers(Integer.valueOf(request.getParameter("id")));
 		
-		if(!user.read()){
-			return createDefaultResponse(doc, "result", "status", "ERR","message", "Database read error");
-		}
+		//if(!user.read()){
+		//	return createDefaultResponse(doc, "result", "status", "ERR","message", "Database read error");
+	//	}
 		
 		session.setAttribute("user", user);
-		session.setAttribute("user_id", user.getId());
+		session.setAttribute("user_id", user.getInt("id_users"));
 		
 
 		return createDefaultResponse(doc, "result", "status", "OK","message", ""+user.getId());
